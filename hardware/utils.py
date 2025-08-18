@@ -2,7 +2,7 @@
 import json
 import pygame
 
-def load_game_config(path='rooms.json'):
+def load_game_config(path='../gemini-api/rooms.json'):
     with open(path, 'r') as file:
         return json.load(file)
     
