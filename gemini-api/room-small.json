@@ -1,0 +1,35 @@
+{
+    "solution_sequence": [
+        { "sensor": "button", "value": "red"},
+        {
+            "sensor": "rotary_encoder",
+            "value": "17"
+        },
+        {
+            "sensor": "distance_sensor",
+            "value": "hovered"
+        },
+        { "sensor": "gyro", "value": "shaking"},
+        { "sensor": "button", "value": "blue"},
+        {
+            "sensor": "rotary_encoder",
+            "value": "chicken"
+        },
+        {
+            "sensor": "distance_sensor",
+            "value": "covered"
+        },
+        {
+            "sensor": "gyro",
+            "value": "shaking"
+        }
+    ],
+    "error_path": "game_over",
+    "time_limit": 60,
+    "retry_limit": 3,
+    "effects": [
+        { "actuator": "light", "mode": "pulse", "color": "red"},
+        { "actuator": "vibration", "mode": "vibrate", "duration": 2},
+        { "actuator": "light", "mode": "pulse", "color": "green"}
+    ]
+}

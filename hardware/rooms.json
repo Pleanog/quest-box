@@ -1,5 +1,5 @@
 {
-  "Title": "Aliens & Church",
+  "Title": "",
   "starting_description": "",
   "trigger1": "blue-button",
   "trigger2": "red-button",
@@ -23,12 +23,10 @@
   "trigger20": "monstor-pos4",
   "paths": [
     {
-      "path_name": "button-path",
-      "description": "you need to press the button or the world ends",
-      "hint": "DO NOT PRESS THE RED BUTTON",
-      "solution_sequence": [
-        "red-button"
-      ],
+      "path_name": "",
+      "description": "",
+      "hint": "",
+      "solution_sequence": [],
       "audio_cue": "",
       "visual_effects": ["", ""],
       "time_limit": 90,

@@ -1,0 +1,53 @@
+{
+    "solution_sequence": [
+        {
+            "sensor": "button",
+            "color": "red",
+            "count": 2
+        },
+        {
+            "sensor": "joystick",
+            "direction": "up"
+        },
+        {
+            "sensor": "color_sensor",
+            "color": "green"
+        },
+        {
+            "actuator": "sound",
+            "type": "ding",
+            "loop": false
+        },
+        {
+            "sensor": "potentiometer",
+            "target": 50,
+            "tol": 10
+        },
+        {
+            "sensor": "distance_sensor",
+            "lt": 20
+        }
+    ],
+    "error_path": "game_over",
+    "time_limit": 63,
+    "retry_limit": 2,
+    "effects": [
+        {
+            "actuator": "vibration_motor",
+            "type": "rattle",
+            "loop": true
+        },
+        {
+            "actuator": "light",
+            "type": "pulse",
+            "color": "green",
+            "loop": true
+        },
+        {
+            "actuator": "light",
+            "type": "lightning",
+            "color": "white",
+            "loop": true
+        }
+    ]
+}
