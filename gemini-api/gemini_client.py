@@ -1,6 +1,7 @@
 import google.generativeai as genai
 import os
 import json
+import random
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -8,17 +9,24 @@ load_dotenv()
 gemini_api_key = os.getenv('GEMINI_API_KEY')
 genai.configure(api_key=gemini_api_key)
 
-# 1. Read the JSON file
 file_path = 'gemini-api/rooms.json'
 with open(file_path, 'r') as file:
     json_data = json.load(file)
 
-# 2. Convert the Python dictionary to a JSON string
+# Convert the Python dictionary to a JSON string
 json_string = json.dumps(json_data, indent=2)
 
-# 3. Create a prompt that includes the JSON string
+# generate a random theme
+themes = ["alien", "pirate", "wild-west", "medieval", "robot"]
+# theme = themes[random.randint(0, len(themes) - 1)]
+theme = "wild-west"  # For consistency in testing
+print(f"Selected theme: {theme}")
+
 prompt = f"""
 You are a creative content generator. Your task is to fill in the empty fields in the following JSON structure to create a complete story.
+Choose theme of the story should be: {theme}.
+The description should have enough info so that the user can solve the puzzle, but not too much that it gives away the solution.
+
 
 Here is the JSON structure you need to populate:
 {json_string}
@@ -38,9 +46,7 @@ Here are the constraints:
 Please generate the complete JSON object and provide only the final JSON in your response, with no additional text or explanation.
 """
 
-# Configure and call the model
 model = genai.GenerativeModel('gemini-1.5-flash')
 response = model.generate_content(prompt)
 
-# Print the generated JSON
 print(response.text)
