@@ -1,3 +1,5 @@
+# tts-service.py
+ 
 import os
 import requests
 from dotenv import load_dotenv
@@ -24,7 +26,7 @@ class AudioService:
     
     def _create_game_directory(self, game_name):
         """Creates the game-specific audio directory if it doesn't exist."""
-        game_audio_dir = os.path.join(BASE_DIR, 'game', game_name)
+        game_audio_dir = os.path.join(BASE_DIR, 'games', game_name)
         if not os.path.exists(game_audio_dir):
             print(f"{Fore.YELLOW}Creating game audio directory: {game_audio_dir}{Style.RESET_ALL}")
             os.makedirs(game_audio_dir)
