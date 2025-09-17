@@ -5,6 +5,13 @@
 
 # main.py
 
+import sys
+import os
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+sys.path.append(parent_dir)
+from geminiAPI.gemini_client import generate_room_configuration
+
 from pathlib import Path
 from threading import Thread
 from queue import Queue
@@ -51,10 +58,14 @@ def main():
     # Add devices to the Input Manager
     for config in device_configs:
         input_manager_instance.add_device(config)
+
+    # Call and run the gemini client to get the room configuration
+    # generate_room_configuration()
     
     # Initialize Game Sequence, passing the event queue
     script_dir = Path(__file__).parent
-    config_path = script_dir.parent / "gemini-api" / "room-small.json"
+    config_path = script_dir / "geminiAPI" / "room-small.json"
+    config_path2 = script_dir / "geminiAPI" / "room.json"
     game_sequence_instance = GameSequence(
         config_path=config_path,
         input_queue=input_event_queue,

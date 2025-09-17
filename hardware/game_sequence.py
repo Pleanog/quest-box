@@ -159,6 +159,25 @@ class GameSequence:
         retry_limit = int(self.config.get("retry_limit", 1))
         initial_effects = self.config.get("effects", [])
 
+        title = self.config.get("title", "Untitled Room")
+        starting_description = self.config.get("starting_description", "")
+        paths = self.config.get("paths", [])
+        
+        for i in range(len(paths)):
+            path_name = paths[i].get("name", f"Path {i+1}")
+            description = paths[i].get("description", "")
+            hint = paths[i].get("hint", "")
+            solution_sequence = paths[i].get("solution_sequence", [])
+            effects = paths[i].get("effects", [])
+            audio_cue = paths[i].get("audio_cue", "")
+            time_limit = paths[i].get("time_limit", 90)
+            retry_limit = int(paths[i].get("retry_limit", 3))
+            death_text = paths[i].get("death_text", "")
+
+        
+
+
+
         if not seq:
             raise ValueError("No solution_sequence defined.")
 

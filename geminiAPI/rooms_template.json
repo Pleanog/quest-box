@@ -1,0 +1,104 @@
+{
+  "title": "",
+  "starting_description": "",
+  "themes": ["aliens", "medieval knights", "wild west", "underwater", "pirates", "haunted house"],
+  "inputs": ["button", "rotary_encoder", "gyro", "distance_sensor"],
+  "buttonValues": ["red", "blue", "green", "yellow", "black"],
+  "rotaryEncoder1Values": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+  "rotaryEncoder2Values": ["dynamite", "knife", "candle", "rope", "key", "book", "dice", "potion", "stick", "potion"],
+  "gyroValues": ["shaking"],
+  "distanceSensorValues": ["hovered", "covered", "far"],
+  "actuators": ["light", "vibration"],
+  "lightTypes": ["pulse", "lightning", "solid"],
+  "vibrationTypes": ["vibrate", "rattle"],
+  "effectsColors": ["red", "green", "blue", "yellow", "white", "purple"],
+  "paths": [
+    {
+      "path_name": "",
+      "description": "",
+      "hint": "",
+      "solution_sequence": [],
+      "audio_cue": "",
+      "effects": [
+        {
+            "actuator": "",
+            "type": "",
+            "loop": true
+        },
+        {
+            "actuator": "",
+            "type": "",
+            "color": "",
+            "loop": true
+        },
+        {
+            "actuator": "",
+            "type": "",
+            "color": "",
+            "loop": true
+        }
+    ],
+      "time_limit": 90,
+      "retry_limit": 3,
+      "death_text": ""
+    },
+    {
+      "path_name": "",
+      "description": "",
+      "hint": "",
+      "solution_sequence": [],
+      "audio_cue": "",
+      "effects": [
+        {
+            "actuator": "",
+            "type": "",
+            "loop": true
+        },
+        {
+            "actuator": "",
+            "type": "",
+            "color": "",
+            "loop": true
+        },
+        {
+            "actuator": "",
+            "type": "",
+            "color": "",
+            "loop": true
+        }
+    ],
+      "time_limit": 90,
+      "retry_limit": 3,
+      "death_text": ""
+    },
+    {
+      "path_name": "",
+      "description": "",
+      "hint": "",
+      "solution_sequence": [],
+      "audio_cue": "",
+      "effects": [
+        {
+            "actuator": "",
+            "type": "",
+            "loop": true
+        },
+        {
+            "actuator": "",
+            "type": "",
+            "color": "",
+            "loop": true
+        },
+        {
+            "actuator": "",
+            "type": "",
+            "color": "",
+            "loop": true
+        }
+    ],
+      "time_limit": 90,
+      "retry_limit": 3,
+      "death_text": ""
+    }
+  ]
+}

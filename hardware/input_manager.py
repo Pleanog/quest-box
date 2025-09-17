@@ -190,8 +190,11 @@ from rotary_encoder_controller import RotaryEncoderController
 from distance_controller import DistanceController
 
 # Options for the Rotary Encoders!
-IMAGE_OPTIONS = ["chicken", "key", "book", "stick", "person", "ship", "bone", "phone", "dice", "candle", "shoe", "door", "teeth", "knife", "apple", "sock", "car", "heart", "potion", "dynamite"] # 20 images
-NUMBER_OPTIONS = [str(i) for i in range(1, 21)] # 20 numbers
+# IMAGE_OPTIONS2 = ["chicken", "key", "book", "stick", "person", "ship", "bone", "phone", "dice", "candle", "shoe", "door", "teeth", "knife", "apple", "sock", "car", "heart", "potion", "dynamite"] # 20 images
+# NUMBER_OPTIONS2 = [str(i) for i in range(1, 21)] # 20 numbers
+
+IMAGE_OPTIONS = ["chicken", "key", "book", "stick", "person", "ship", "bone", "phone", "dice", "candle"] # 10 images
+NUMBER_OPTIONS = [str(i) for i in range(1, 11)] # 10 numbers
 
 class InputManager:
     def __init__(self, event_queue, bus_lock, device_configs):
