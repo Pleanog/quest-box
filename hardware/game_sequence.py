@@ -18,10 +18,6 @@ SENSOR_REGISTRY = {
         "required": ["value"],
         "aliases": {},
     },
-    # "color_sensor": {
-    #     "required": ["value"],
-    #     "aliases": {"color": "colour"},
-    # },
     "distance_sensor": {
         "required": ["value"], # The states (covered, hovered, clear)
         "aliases": {},
@@ -155,85 +151,6 @@ class GameSequence:
                 break
             
             time.sleep(1)
-
-    # def run_path(self, solution_sequence, effects, time_limit, retry_limit, death_text):
-    #     print(f"▶ Starting Path. Retry limit: {retry_limit}")
-
-    #     attempt = 1
-    #     retries_left = retry_limit
-
-    #     while retries_left > 0:
-    #         print(f"\n🔁 Attempt {attempt}/{retry_limit}")
-    #         self.sensor_state = {}
-
-    #         # Start timer thread
-    #         self.stop_timer_flag.clear()
-    #         self.start_time_global = time.time()
-    #         timer_thread = threading.Thread(target=self.timer_thread_func, args=(time_limit,))
-    #         timer_thread.daemon = True
-    #         timer_thread.start()
-
-    #         # Send initial effects to the OutputManager
-    #         for effect in effects:
-    #             try:
-    #                 actuator_type, params = _normalize_and_validate_step(effect)
-    #                 self.output_manager.command_queue.put((actuator_type, params))
-    #             except Exception as e:
-    #                 print(f"✖ Invalid initial effect: {e}")
-            
-    #         sequence_success = True
-    #         for idx, step in enumerate(solution_sequence, start=1):
-    #             # Timed out
-    #             if self.stop_timer_flag.is_set():
-    #                 sequence_success = False
-    #                 return False
-
-    #             try:
-    #                 if "sensor" in step:
-    #                     expected_sensor_type, params = _normalize_and_validate_step(step)
-    #                     print(f"{Fore.LIGHTCYAN_EX}Step {idx}: Waiting for sensor '{expected_sensor_type}' with value: {params.get('value')}...{Style.RESET_ALL}")
-
-    #                     while True:
-    #                         if self.stop_timer_flag.is_set():
-    #                             sequence_success = False
-    #                             return False
-                            
-    #                         try:
-    #                             event = self.input_queue.get(timeout=0.1)
-    #                             if self._check_event(event, step):
-    #                                 print(f"{Fore.GREEN}✅ Correct sensor activation!{Style.RESET_ALL}")
-    #                                 break
-                                
-    #                         except queue.Empty:
-    #                             pass
-                                
-    #                 elif "actuator" in step:
-    #                     actuator_type, params = _normalize_and_validate_step(step)
-                        
-    #                     print(f"➡ Step {idx}: Actuator {actuator_type} {params}")
-    #                     self.output_manager.command_queue.put((actuator_type, params))
-                        
-    #             except Exception as e:
-    #                 print(f"{Fore.YELLOW}✖ Invalid step #{idx}: {e}{Style.RESET_ALL}")
-    #                 sequence_success = False
-    #                 break
-            
-    #         self.stop_timer_flag.set()
-
-    #         if sequence_success:
-    #             print(f"{Fore.GREEN}\n✅ Success! Sequence completed.{Style.RESET_ALL}")
-    #             return True
-    #         else:
-    #             retries_left -= 1
-    #             if retries_left <= 0:
-    #                 self._route_error(death_text if death_text else "game_over")
-    #                 return False
-    #             else:
-    #                 print(f"✖ Incorrect sequence. Retries left: {retries_left}/{retry_limit}")
-    #                 attempt += 1
-    #                 while not self.input_queue.empty():
-    #                     self.input_queue.get()
-
 
     def run_sequence(self):
         title = self.config.get("title", "Untitled Room")

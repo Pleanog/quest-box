@@ -84,11 +84,7 @@ class RotaryEncoderController:
 #  Test for main
 if __name__ == "__main__":
     
-    IMAGE_OPTIONS = [
-    "chicken", "key", "book", "stick", "person", "ship", "bone", "phone", "dice", 
-    "candle", "shoe", "door", "teeth", "knife", "apple", "sock", "car", "heart", 
-    "potion", "dynamite"
-    ]
+    IMAGE_OPTIONS = ["dynamite", "knife", "candle", "rope", "key", "book", "dice", "potion", "stick", "compass"] # 10 images
     NUMBER_OPTIONS = [str(i) for i in range(1, 11)] # 10 numbers
     
     event_queue = queue.Queue()
