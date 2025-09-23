@@ -63,7 +63,7 @@ def generate_room_configuration():
     - "rotaryEncoderNumberValues": A number from "1" to "10".
     - "rotaryEncoderPictureValues": An item from the list: "dynamite", "knife", "candle", "rope", "key", "book", "dice", "potion", "stick".
     - "gyroValues": Must be "shaking".
-    - "distanceSensorValues": Choose from: "hovered", "covered", "far".
+    - "distanceSensorValues": Choose from: "hovered", "covered".
     - "paths": You must create 3 unique and solvable adventure paths.
         - "hint": A string of clues separated by " // ". Must be logically solvable.
         - "solution_sequence": A list of 2 to 4 input objects.
