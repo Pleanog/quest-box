@@ -36,7 +36,7 @@ class RotaryEncoderController:
             # Check for button press
             button_state = GPIO.input(self.button_pin)
             if not button_state:
-                event = InputEvent("rotary_encoder", self.options[self.current_index], {"name": self.name})
+                event = InputEvent(self.name, self.options[self.current_index], {"name": self.name})
                 self.event_queue.put(event)
                 print(f"[{self.name}] Button pressed. Selected: {self.options[self.current_index]}")
                 time.sleep(0.3)
@@ -94,7 +94,7 @@ if __name__ == "__main__":
     event_queue = queue.Queue()
 
     encoder = RotaryEncoderController(
-        name="image_dial",
+        name="rotary_encoder",
         event_queue=event_queue,
         clk_pin=20,
         dt_pin=21,

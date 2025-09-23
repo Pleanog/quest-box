@@ -2,15 +2,15 @@
   "title": "The Ghost of Rattlesnake Gulch",
   "starting_description": "You're a lone prospector in the dusty town of Rattlesnake Gulch, seeking the legendary lost gold of 'One-Eyed Jack'. An old chest sits before you, rumored to hold the key to the treasure. It's locked with three distinct, strange contraptions.",
   "themes": ["wild west"],
-  "inputs": ["button", "rotary_encoder_1", "rotary_encoder_2", "gyro", "distance_sensor"],
+  "inputs": ["button", "rotary_encoder_number", "rotary_encoder_picture", "gyro", "distance_sensor"],
   "buttonValues": ["red", "blue", "green", "yellow", "black"],
-  "rotaryEncoder1Values": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
-  "rotaryEncoder2Values": ["dynamite", "knife", "candle", "rope", "key", "book", "dice", "potion", "stick"],
+  "rotaryEncoderNumberValues": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+  "rotaryEncoderPictureValues": ["dynamite", "knife", "candle", "rope", "key", "book", "dice", "potion", "stick"],
   "gyroValues": ["shaking"],
   "distanceSensorValues": ["hovered", "covered", "far"],
   "actuators": ["light", "vibration"],
-  "lightTypes": ["pulse", "lightning", "solid"],
-  "vibrationTypes": ["vibrate", "rattle"],
+  "lightModes": ["static", "blink", "pulse", "fade"],
+  "vibrationModes": ["vibrate", "rattle"],
   "effectsColors": ["red", "green", "blue", "yellow", "white", "purple"],
   "paths": [
     {
@@ -19,7 +19,7 @@
       "hint": "How many points does a classic sheriff's star have? // What color do people associate with money?",
       "solution_sequence": [
         {
-            "sensor": "rotary_encoder_1",
+            "sensor": "rotary_encoder_number",
             "value": "5"
         },
         {
@@ -31,20 +31,13 @@
       "effects": [
         {
             "actuator": "vibration",
-            "type": "vibrate",
-            "loop": false
+            "mode": "vibrate",
+            "duration": 5
         },
         {
             "actuator": "light",
-            "type": "pulse",
-            "color": "green",
-            "loop": false
-        },
-        {
-            "actuator": "light",
-            "type": "solid",
-            "color": "white",
-            "loop": false
+            "mode": "pulse",
+            "color": "red"
         }
     ],
       "time_limit": 90,
@@ -69,20 +62,13 @@
       "effects": [
         {
             "actuator": "vibration",
-            "type": "rattle",
-            "loop": true
+            "mode": "vibrate",
+            "duration": 5
         },
         {
             "actuator": "light",
-            "type": "pulse",
-            "color": "purple",
-            "loop": true
-        },
-        {
-            "actuator": "light",
-            "type": "solid",
-            "color": "green",
-            "loop": false
+            "mode": "pulse",
+            "color": "red"
         }
     ],
       "time_limit": 90,
@@ -95,7 +81,7 @@
       "hint": "What tool would a captured bandit use on a rope? // What is the color of a viper's bite warning?",
       "solution_sequence": [
         {
-            "sensor": "rotary_encoder_2",
+            "sensor": "rotary_encoder_picture",
             "value": "knife"
         },
         {
@@ -107,20 +93,13 @@
       "effects": [
         {
             "actuator": "vibration",
-            "type": "vibrate",
-            "loop": false
+            "mode": "rattle",
+            "duration": 5
         },
         {
             "actuator": "light",
-            "type": "lightning",
-            "color": "red",
-            "loop": false
-        },
-        {
-            "actuator": "light",
-            "type": "solid",
-            "color": "yellow",
-            "loop": false
+            "mode": "solid",
+            "color": "green"
         }
     ],
       "time_limit": 90,

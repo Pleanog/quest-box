@@ -58,10 +58,10 @@ def generate_room_configuration():
         - **Structure:** Separate the individual clues within the hint string with " // ".
 
     **Detailed Field Constraints:**
-    - "inputs": Choose from: "button", "rotary_encoder_1", "rotary_encoder_2", "gyro", "distance_sensor".
+    - "inputs": Choose from: "button", "rotary_encoder_number", "rotary_encoder_picture", "gyro", "distance_sensor".
     - "buttonValues": Choose from: "red", "blue", "green", "yellow", "black".
-    - "rotaryEncoder1Values": A number from "1" to "10".
-    - "rotaryEncoder2Values": An item from the list: "dynamite", "knife", "candle", "rope", "key", "book", "dice", "potion", "stick".
+    - "rotaryEncoderNumberValues": A number from "1" to "10".
+    - "rotaryEncoderPictureValues": An item from the list: "dynamite", "knife", "candle", "rope", "key", "book", "dice", "potion", "stick".
     - "gyroValues": Must be "shaking".
     - "distanceSensorValues": Choose from: "hovered", "covered", "far".
     - "paths": You must create 3 unique and solvable adventure paths.
@@ -71,15 +71,15 @@ def generate_room_configuration():
 
     **Detailed Actuator Constraints:**
     - "actuators": Choose from the following options: "light", "vibration".
-    - "lightTypes": Choose from the following options: "pulse", "lightning", "solid".
-    - "vibrationTypes": Choose from the following options: "vibrate", "rattle".
+    - "lightModes": Choose from the following options: "static", "blink", "pulse", "fade".
+    - "vibrationModes": Choose from the following options: "vibrate", "rattle".
     - "effectsColors": Choose from the following options: "red", "green", "blue", "yellow", "white", "purple".
     - "audio_cue": A sound effect to play.
-    - "effects": Two effects to display selected from the "actuators" list. Each effect should include:
+    - "effects": Two effects to display selected from the "actuators" list. One actuator must be "light" and the other "vibration".
         - "actuator": The type of actuator ("light" or "vibration").
-        - "type": The type of effect (choose from "lightTypes" or "vibrationTypes").
+        - "mode": The type of effect (choose from "lightModes" for light actuators or "vibrationModes" for vibration actuators).
+        - "duration": Duration of the effect in seconds (integer between 1 and 10). This only applies to vibration effects.
         - "color": The color of the effect (choose from "effectsColors"). This only applies to light effects.
-        - "loop": A boolean indicating whether the effect should loop.
 
     Please generate the complete JSON object. When generating the hints for the solution sequence, provide a logical explanation that connections each hint to the correct solution in the solution sequence. Put this explanation into a new variable called "Hint Logic" at the end of the JSON.
     Remove the Hint Logic variable before returning the final JSON.
@@ -143,3 +143,9 @@ def generate_room_configuration():
 
     return True
 
+if __name__ == "__main__":
+    success = generate_room_configuration()
+    if success:
+        print("Room configuration generated successfully.")
+    else:
+        print("Failed to generate room configuration.")

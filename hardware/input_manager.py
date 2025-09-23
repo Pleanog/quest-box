@@ -259,9 +259,9 @@ class InputManager:
         button_pin = config["button_pin"]
         
         options = []
-        if name == "image_dial":
+        if name == "rotary_encoder_picture":
             options = IMAGE_OPTIONS
-        elif name == "number_dial":
+        elif name == "rotary_encoder_number":
             options = NUMBER_OPTIONS
         
         encoder_controller = RotaryEncoderController(
@@ -336,8 +336,8 @@ if __name__ == "__main__":
         {"type": "sx1509_button", "value": "green", "pin": 5},
         {"type": "sx1509_button", "value": "black", "pin": 13},
         {"type": "gyro", "value": "shaking"}, # TODO define the pin here!
-        {"type": "rotary_encoder", "name": "image_dial", "clk_pin": 20, "dt_pin": 21, "button_pin": 16},
-        {"type": "rotary_encoder", "name": "number_dial", "clk_pin": 13, "dt_pin": 19, "button_pin": 26},
+        {"type": "rotary_encoder", "name": "rotary_encoder_picture", "clk_pin": 20, "dt_pin": 21, "button_pin": 16},
+        {"type": "rotary_encoder", "name": "rotary_encoder_number", "clk_pin": 13, "dt_pin": 19, "button_pin": 26},
         {"type": "distance_sensor", "trigger_pin": 23, "echo_pin": 24},
     ]
 

@@ -39,8 +39,8 @@ def main():
         {"type": "sx1509_button", "value": "green", "pin": 5},
         {"type": "sx1509_button", "value": "black", "pin": 13},
         {"type": "gyro", "value": "shaking"},
-        {"type": "rotary_encoder", "name": "image_dial", "clk_pin": 20, "dt_pin": 21, "button_pin": 16},
-        {"type": "rotary_encoder", "name": "number_dial", "clk_pin": 13, "dt_pin": 19, "button_pin": 26},
+        {"type": "rotary_encoder", "name": "rotary_encoder_picture", "clk_pin": 20, "dt_pin": 21, "button_pin": 16},
+        {"type": "rotary_encoder", "name": "rotary_encoder_number", "clk_pin": 13, "dt_pin": 19, "button_pin": 26},
         {"type": "distance_sensor", "trigger_pin": 23, "echo_pin": 24},
     ]
 
@@ -63,9 +63,9 @@ def main():
     # generate_room_configuration()
     
     # Initialize Game Sequence, passing the event queue
-    script_dir = Path(__file__).parent
-    config_path = script_dir / "geminiAPI" / "room-small.json"
-    config_path2 = script_dir / "geminiAPI" / "room.json"
+    script_dir = Path(__file__).parent.parent
+    # config_path = script_dir / "geminiAPI" / "room-small.json"
+    config_path = script_dir / "geminiAPI" / "room.json"
     game_sequence_instance = GameSequence(
         config_path=config_path,
         input_queue=input_event_queue,

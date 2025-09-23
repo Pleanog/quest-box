@@ -2,15 +2,15 @@
   "title": "",
   "starting_description": "",
   "themes": ["aliens", "medieval knights", "wild west", "underwater", "pirates", "haunted house"],
-  "inputs": ["button", "rotary_encoder", "gyro", "distance_sensor"],
+  "inputs": ["button", "rotary_encoder_number", "rotary_encoder_picture", "gyro", "distance_sensor"],
   "buttonValues": ["red", "blue", "green", "yellow", "black"],
-  "rotaryEncoder1Values": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
-  "rotaryEncoder2Values": ["dynamite", "knife", "candle", "rope", "key", "book", "dice", "potion", "stick", "potion"],
+  "rotaryEncoderNumberValues": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+  "rotaryEncoderPictureValues": ["dynamite", "knife", "candle", "rope", "key", "book", "dice", "potion", "stick", "compass"],
   "gyroValues": ["shaking"],
   "distanceSensorValues": ["hovered", "covered", "far"],
   "actuators": ["light", "vibration"],
-  "lightTypes": ["pulse", "lightning", "solid"],
-  "vibrationTypes": ["vibrate", "rattle"],
+  "lightModes": ["static", "blink", "pulse", "fade"],
+  "vibrationModes": ["vibrate", "rattle"],
   "effectsColors": ["red", "green", "blue", "yellow", "white", "purple"],
   "paths": [
     {
@@ -22,20 +22,13 @@
       "effects": [
         {
             "actuator": "",
-            "type": "",
-            "loop": true
+            "mode": "",
+            "duration": 0
         },
         {
             "actuator": "",
-            "type": "",
-            "color": "",
-            "loop": true
-        },
-        {
-            "actuator": "",
-            "type": "",
-            "color": "",
-            "loop": true
+            "mode": "",
+            "color": ""
         }
     ],
       "time_limit": 90,
@@ -51,20 +44,13 @@
       "effects": [
         {
             "actuator": "",
-            "type": "",
-            "loop": true
+            "mode": "",
+            "duration": 0
         },
         {
             "actuator": "",
-            "type": "",
-            "color": "",
-            "loop": true
-        },
-        {
-            "actuator": "",
-            "type": "",
-            "color": "",
-            "loop": true
+            "mode": "",
+            "color": ""
         }
     ],
       "time_limit": 90,
@@ -80,20 +66,13 @@
       "effects": [
         {
             "actuator": "",
-            "type": "",
-            "loop": true
+            "mode": "",
+            "duration": 0
         },
         {
             "actuator": "",
-            "type": "",
-            "color": "",
-            "loop": true
-        },
-        {
-            "actuator": "",
-            "type": "",
-            "color": "",
-            "loop": true
+            "mode": "",
+            "color": ""
         }
     ],
       "time_limit": 90,
