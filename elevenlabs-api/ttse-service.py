@@ -29,7 +29,7 @@ class TTSEService:
 
     def _create_sound_effects_directory(self, game_name):
         """Creates the sound effects directory for a specific game if it doesn't exist."""
-        game_audio_dir = os.path.join(BASE_DIR, 'game', game_name, 'sound_effects')
+        game_audio_dir = os.path.join(BASE_DIR, 'games', game_name, 'sound_effects')
         if not os.path.exists(game_audio_dir):
             print(f"{Fore.YELLOW}Creating sound effects directory: {game_audio_dir}{Style.RESET_ALL}")
             os.makedirs(game_audio_dir)
