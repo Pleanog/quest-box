@@ -18,10 +18,6 @@ SENSOR_REGISTRY = {
         "required": ["value"],
         "aliases": {},
     },
-    # "color_sensor": {
-    #     "required": ["value"],
-    #     "aliases": {"color": "colour"},
-    # },
     "distance_sensor": {
         "required": ["value"], # The states (covered, hovered, clear)
         "aliases": {},
@@ -30,10 +26,14 @@ SENSOR_REGISTRY = {
         "required": ["value"],
         "aliases": {},
     },
-    "rotary_encoder": {
-        "required": ["value"], # This is a dictionary of 20 values
+    "rotary_encoder_number": {
+        "required": ["value"], # This is a dictionary of 10 values
         "aliases": {},
     },
+    "rotary_encoder_picture": {
+        "required": ["value"], # This is a dictionary of 10 values
+        "aliases": {},
+    }
 }
 
 # -------- Error handlers --------
@@ -153,89 +153,128 @@ class GameSequence:
             time.sleep(1)
 
     def run_sequence(self):
-        seq = self.config.get("solution_sequence", [])
-        error_path = self.config.get("error_path", "game_over")
-        time_limit = self.config.get("time_limit")
-        retry_limit = int(self.config.get("retry_limit", 1))
-        initial_effects = self.config.get("effects", [])
+        title = self.config.get("title", "Untitled Room")
+        starting_description = self.config.get("starting_description", "")
+        paths = self.config.get("paths", [])
 
-        if not seq:
-            raise ValueError("No solution_sequence defined.")
-
-        print(f"▶ Starting sequence. Retry limit: {retry_limit}")
-
-        attempt = 1
-        retries_left = retry_limit
-
-        while retries_left > 0:
-            print(f"\n🔁 Attempt {attempt}/{retry_limit}")
-            self.sensor_state = {}
-
-            # Start timer thread
-            self.stop_timer_flag.clear()
-            self.start_time_global = time.time()
-            timer_thread = threading.Thread(target=self.timer_thread_func, args=(time_limit,))
-            timer_thread.daemon = True
-            timer_thread.start()
-
-            # Send initial effects to the OutputManager
-            for effect in initial_effects:
-                try:
-                    actuator_type, params = _normalize_and_validate_step(effect)
-                    self.output_manager.command_queue.put((actuator_type, params))
-                except Exception as e:
-                    print(f"✖ Invalid initial effect: {e}")
-            
-            sequence_success = True
-            for idx, step in enumerate(seq, start=1):
-                if self.stop_timer_flag.is_set():
-                    sequence_success = False
-                    break
-
-                try:
-                    if "sensor" in step:
-                        expected_sensor_type, params = _normalize_and_validate_step(step)
-                        print(f"{Fore.LIGHTCYAN_EX}Step {idx}: Waiting for sensor '{expected_sensor_type}' with value: {params.get('value')}...{Style.RESET_ALL}")
-
-                        while True:
-                            if self.stop_timer_flag.is_set():
-                                sequence_success = False
-                                break
-                            
-                            try:
-                                event = self.input_queue.get(timeout=0.1)
-                                if self._check_event(event, step):
-                                    print(f"{Fore.GREEN}✅ Correct sensor activation!{Style.RESET_ALL}")
-                                    break
-                                
-                            except queue.Empty:
-                                pass
-                                
-                    elif "actuator" in step:
-                        actuator_type, params = _normalize_and_validate_step(step)
-                        
-                        print(f"➡ Step {idx}: Actuator {actuator_type} {params}")
-                        self.output_manager.command_queue.put((actuator_type, params))
-                        
-                except Exception as e:
-                    print(f"{Fore.YELLOW}✖ Invalid step #{idx}: {e}{Style.RESET_ALL}")
-                    sequence_success = False
-                    break
-            
-            self.stop_timer_flag.set()
-
-            if sequence_success:
-                print(f"{Fore.GREEN}\n✅ Success! Sequence completed.{Style.RESET_ALL}")
-                return True
-            else:
-                retries_left -= 1
-                if retries_left <= 0:
-                    self._route_error(error_path)
-                    return False
-                else:
-                    print(f"✖ Incorrect sequence. Retries left: {retries_left}/{retry_limit}")
-                    attempt += 1
-                    while not self.input_queue.empty():
-                        self.input_queue.get()
+        print(f"{Fore.MAGENTA}=== {title} ==={Fore.RESET}")
+        print(f"\n{Fore.MAGENTA}--- {starting_description} ---{Fore.RESET}")
         
-        return False
+        # Iterate through each path in the configuration
+        for i, path in enumerate(paths):
+            path_name = path.get("path_name", f"Path {i+1}")
+            # ... (getting other path variables remains the same) ...
+            description = path.get("description", "")
+            hint = path.get("hint", "")
+            solution_sequence = path.get("solution_sequence", [])
+            effects = path.get("effects", [])
+            time_limit = path.get("time_limit", 90)
+            retry_limit = int(path.get("retry_limit", 3))
+            death_text = path.get("death_text", "")
+
+            print(f"\n{Fore.MAGENTA}--- {path_name} ---{Fore.RESET}")
+            print(f"{description}")
+            print(f"\n{Fore.YELLOW}💡 Hint: {hint}{Fore.RESET}")
+
+            if not solution_sequence:
+                raise ValueError("No solution_sequence defined.")
+
+            # --- Logic for a single path ---
+            path_succeeded = False
+            retries_left = retry_limit
+
+            while retries_left > 0:
+                print(f"\n🔁 Attempt {retry_limit - retries_left + 1}/{retry_limit}")
+                
+                # This is a placeholder for your inner sequence logic
+                # For this to work, this inner logic must return True or False
+                sequence_success = self._run_single_attempt(solution_sequence, time_limit, effects)
+
+                if sequence_success:
+                    # 1. If the attempt was successful, mark the path as succeeded...
+                    path_succeeded = True
+                    print(f"{Fore.GREEN}\n✅ Success! Path '{path_name}' completed.{Style.RESET_ALL}")
+                    # 2. ...and 'break' out of the 'while' loop to go to the next path.
+                    break 
+                else:
+                    retries_left -= 1
+                    if retries_left > 0:
+                        print(f"✖ Incorrect sequence. Retries left: {retries_left}/{retry_limit}")
+                    else:
+                        print(f"{Fore.RED}\nNo retries left for '{path_name}'.{Style.RESET_ALL}")
+
+            # 3. After the 'while' loop, check if this path was ever solved.
+            if not path_succeeded:
+                # If a path is failed, end the entire game.
+                self._route_error(death_text if death_text else "game_over")
+                return False # Exit the function with a failure status
+
+        # 4. If the 'for' loop completes without any failures, the game is won.
+        print(f"{Fore.GREEN}\n🎉 Congratulations! All paths completed!{Style.RESET_ALL}")
+        return True
+
+    # You need a helper method to contain the logic for a single attempt.
+    # This makes the main loop much easier to read and manage.
+    def _run_single_attempt(self, solution_sequence, time_limit, effects):
+        self.sensor_state = {}
+
+        # Start timer thread
+        self.stop_timer_flag.clear()
+        self.start_time_global = time.time()
+        timer_thread = threading.Thread(target=self.timer_thread_func, args=(time_limit,))
+        timer_thread.daemon = True
+        timer_thread.start()
+
+        # Send initial effects to the OutputManager
+        for effect in effects:
+            try:
+                actuator_type, params = _normalize_and_validate_step(effect)
+                self.output_manager.command_queue.put((actuator_type, params))
+            except Exception as e:
+                print(f"✖ Invalid initial effect: {e}")
+        
+        sequence_success = True
+        for idx, step in enumerate(solution_sequence, start=1):
+            if self.stop_timer_flag.is_set():
+                sequence_success = False
+                break
+
+            try:
+                if "sensor" in step:
+                    expected_sensor_type, params = _normalize_and_validate_step(step)
+                    print(f"{Fore.LIGHTCYAN_EX}Step {idx}: Waiting for sensor '{expected_sensor_type}' with value: {params.get('value')}...{Style.RESET_ALL}")
+                    
+                    # Inner loop for waiting on a single sensor event
+                    while True: 
+                        if self.stop_timer_flag.is_set():
+                            sequence_success = False
+                            break
+                        try:
+                            event = self.input_queue.get(timeout=0.1)
+                            if self._check_event(event, step):
+                                print(f"{Fore.GREEN}✅ Correct sensor activation!{Style.RESET_ALL}")
+                                break # Correct event, break from waiting loop
+                        except queue.Empty:
+                            continue # No event, continue waiting
+                    
+                    if not sequence_success: # Break outer loop if timer ran out
+                        break
+
+                elif "actuator" in step:
+                    actuator_type, params = _normalize_and_validate_step(step)
+                    print(f"➡ Step {idx}: Actuator {actuator_type} {params}")
+                    self.output_manager.command_queue.put((actuator_type, params))
+                    
+            except Exception as e:
+                print(f"{Fore.YELLOW}✖ Invalid step #{idx}: {e}{Style.RESET_ALL}")
+                sequence_success = False
+                break
+        
+        self.stop_timer_flag.set()
+        timer_thread.join() # Wait for timer thread to finish
+        
+        # Clear input queue for next attempt
+        while not self.input_queue.empty():
+            self.input_queue.get()
+
+        return sequence_success

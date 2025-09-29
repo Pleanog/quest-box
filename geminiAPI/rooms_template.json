@@ -1,0 +1,83 @@
+{
+  "title": "",
+  "starting_description": "",
+  "themes": ["aliens", "medieval knights", "wild west", "underwater", "pirates", "haunted house"],
+  "inputs": ["button", "rotary_encoder_number", "rotary_encoder_picture", "gyro", "distance_sensor"],
+  "buttonValues": ["red", "blue", "green", "yellow", "black"],
+  "rotaryEncoderNumberValues": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+  "rotaryEncoderPictureValues": ["dynamite", "knife", "candle", "rope", "key", "book", "dice", "potion", "stick", "compass"],
+  "gyroValues": ["shaking"],
+  "distanceSensorValues": ["hovered", "covered"],
+  "actuators": ["light", "vibration"],
+  "lightModes": ["static", "blink", "pulse", "fade"],
+  "vibrationModes": ["vibrate", "rattle"],
+  "effectsColors": ["red", "green", "blue", "yellow", "white", "purple"],
+  "paths": [
+    {
+      "path_name": "",
+      "description": "",
+      "hint": "",
+      "solution_sequence": [],
+      "audio_cue": "",
+      "effects": [
+        {
+            "actuator": "",
+            "mode": "",
+            "duration": 0
+        },
+        {
+            "actuator": "",
+            "mode": "",
+            "color": ""
+        }
+    ],
+      "time_limit": 90,
+      "retry_limit": 3,
+      "death_text": ""
+    },
+    {
+      "path_name": "",
+      "description": "",
+      "hint": "",
+      "solution_sequence": [],
+      "audio_cue": "",
+      "effects": [
+        {
+            "actuator": "",
+            "mode": "",
+            "duration": 0
+        },
+        {
+            "actuator": "",
+            "mode": "",
+            "color": ""
+        }
+    ],
+      "time_limit": 90,
+      "retry_limit": 3,
+      "death_text": ""
+    },
+    {
+      "path_name": "",
+      "description": "",
+      "hint": "",
+      "solution_sequence": [],
+      "audio_cue": "",
+      "effects": [
+        {
+            "actuator": "",
+            "mode": "",
+            "duration": 0
+        },
+        {
+            "actuator": "",
+            "mode": "",
+            "color": ""
+        }
+    ],
+      "time_limit": 90,
+      "retry_limit": 3,
+      "death_text": ""
+    }
+  ]
+}

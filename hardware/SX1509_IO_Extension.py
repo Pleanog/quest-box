@@ -16,19 +16,6 @@ REG_DATA_A          = 0x11
 
 DEBOUNCE_TIME = 0.1  # Debounce time in seconds
 
-# class SX1509:
-#     def __init__(self, bus=1, address=SX1509_ADDRESS):
-#         self.bus = SMBus(bus)
-#         self.address = address
-#         self.last_state = {}  # Store the last known state of each button
-#         self.last_time = {}   # Store the last time a button state changed
-
-#     def write_register(self, reg, value):
-#         self.bus.write_byte_data(self.address, reg, value)
-
-#     def read_register(self, reg):
-#         return self.bus.read_byte_data(self.address, reg)
-
 class SX1509:
     def __init__(self, bus=1, address=SX1509_ADDRESS, bus_lock=None):
         self.bus = SMBus(bus)
@@ -46,49 +33,46 @@ class SX1509:
             return self.bus.read_byte_data(self.address, reg)
 
     def setup_input_with_pullup(self, pin):
+        """Sets up a pin as an input with an internal pull-up resistor."""
+        # Determine the correct registers and mask based on the pin number
         if pin < 8:
             mask = 1 << pin
-            dir_val = self.read_register(REG_DIR_A) | mask
-            self.write_register(REG_DIR_A, dir_val)
-            pull_val = self.read_register(REG_PULL_UP_A) | mask
-            self.write_register(REG_PULL_UP_A, pull_val)
-            in_val = self.read_register(REG_INPUT_DISABLE_A) & ~mask
-            self.write_register(REG_INPUT_DISABLE_A, in_val)
+            reg_dir, reg_pull, reg_in = REG_DIR_A, REG_PULL_UP_A, REG_INPUT_DISABLE_A
         else:
             mask = 1 << (pin - 8)
-            dir_val = self.read_register(REG_DIR_B) | mask
-            self.write_register(REG_DIR_B, dir_val)
-            pull_val = self.read_register(REG_PULL_UP_B) | mask
-            self.write_register(REG_PULL_UP_B, pull_val)
-            in_val = self.read_register(REG_INPUT_DISABLE_B) & ~mask
-            self.write_register(REG_INPUT_DISABLE_B, in_val)
+            reg_dir, reg_pull, reg_in = REG_DIR_B, REG_PULL_UP_B, REG_INPUT_DISABLE_B
+
+        # Now, execute the logic once with the correct variables
+        dir_val = self.read_register(reg_dir) | mask
+        self.write_register(reg_dir, dir_val)
+
+        pull_val = self.read_register(reg_pull) | mask
+        self.write_register(reg_pull, pull_val)
+
+        in_val = self.read_register(reg_in) & ~mask
+        self.write_register(reg_in, in_val)
 
     def read_pin(self, pin):
         """
-        Reads the raw state of a specific pin on the SX1509.
-
-        Args:
-            pin (int): The pin number to read (0-15).
-
-        Returns:
-            int: 0 if the button is pressed (low), 1 if not pressed (high).
+        Reads the raw state of a specific pin.
+        Returns: 0 if pressed (low), 1 if not pressed (high).
         """
+        # Determine the correct register and bit shift based on the pin number
         if pin < 8:
-            val = self.read_register(REG_DATA_A)
-            return (val >> pin) & 0x01
+            reg_data = REG_DATA_A
+            shift = pin
         else:
-            val = self.read_register(REG_DATA_B)
-            return (val >> (pin - 8)) & 0x01
+            reg_data = REG_DATA_B
+            shift = pin - 8
+        
+        # Read the register and extract the specific pin's state
+        val = self.read_register(reg_data)
+        return (val >> shift) & 0x01
 
     def debounced_read_pin(self, pin):
-        """Reads the pin state with debouncing to filter out spurious transitions.
-
-        Args:
-            pin (int): The pin number to read (0-15).
-
-        Returns:
-            int: 0 if the button is pressed (low), 1 if not pressed (high),
-                after applying debouncing.
+        """
+        Reads the pin state with debouncing to filter out spurious transitions.
+        Returns: 0 if pressed (low), 1 if not pressed (high).
         """
         current_time = time.time()
         current_state = self.read_pin(pin)
@@ -99,18 +83,15 @@ class SX1509:
             self.last_time[pin] = current_time
             return current_state
 
-        if current_state != self.last_state[pin]:
-            # State has changed, check if it's been stable for DEBOUNCE_TIME
-            if current_time - self.last_time[pin] > DEBOUNCE_TIME:
-                # State is stable, update last state and time
-                self.last_state[pin] = current_state
-                self.last_time[pin] = current_time
-                return current_state
-            else:
-                # State is still bouncing, ignore it
-                return self.last_state[pin]
-        else:
-            # State is the same as last time, update the last_time
+        last_known_state = self.last_state[pin]
+        if current_state != last_known_state:
+            # State has changed, reset the timer
             self.last_time[pin] = current_time
-            return current_state
-
+            self.last_state[pin] = current_state
+            return last_known_state  # Return previous stable state during bounce
+        
+        # State is stable, check if debounce time has passed
+        if current_time - self.last_time[pin] > DEBOUNCE_TIME:
+            return current_state  # Return the new stable state
+        else:
+            return last_known_state # Not stable long enough, return old state

@@ -1,8 +1,13 @@
+# quest-box
+AI powered dungeon adventures on a physical hardware box, with many interactive elements
+
+---
+
 # Quest-Box: An Interactive Dungeon Adventures in a Box
 
 ## 📖 Project Overview
 
-Quest-Box is a prototype of an interactive puzzle box that combines physical hardware with a dynamic, AI-powered narrative. Developed as a university project at LMU, this system demonstrates the integration of an LLM that communicates with the Raspberry Pi got get acces to various sensors and actuators to create an immersive, story-driven game. Like an AI powered pen and paper / dungeon adventures on a physical hardware box! The core of the project lies in its ability to translate physical input from the user into meaningful events that progress a branching narrative, while providing rich feedback through lights, sound, and vibration.
+Quest-Box is a prototype of an interactive puzzle box that combines physical hardware with a dynamic, AI-powered narrative. Developed as a university project, this system demonstrates the integration of a Raspberry Pi with various sensors and actuators to create an immersive, story-driven game. The core of the project lies in its ability to translate physical input from the user into meaningful events that progress a branching narrative, while providing rich feedback through lights, sound, and vibration.
 
 ## ⚙️ System Architecture
 
@@ -44,6 +49,25 @@ To connect to the Raspberry Pi for development, **Tailscale** is used for secure
 
 After connecting, you can navigate to the project directory and run the main application. Note that some hardware components like the LEDs require root privileges, so you must run the main script with `sudo`: `sudo python3 main.py`.
 
+The following command allows you to run sudo but with the correct specified venv:
+    led_controller.py main: 
+        sudo /home/philipp/quest-box/.venv/bin/python /home/philipp/quest-box/hardware/led_controller.py
+    main.py:
+        sudo /home/philipp/quest-box/.venv/bin/python /home/philipp/quest-box/hardware/main.py
+    gemini-api:
+        sudo /home/philipp/quest-box/.venv/bin/python /home/philipp/quest-box/gemini-api/gemini_client.py
+
 ## 🎶 Audio and Sound
 
 The system is designed to provide audio feedback. To ensure this works reliably, the audio session must be active. If the Raspberry Pi is running in a headless state, you may need to first start an audio-playing script to initialize the session before running the main game loop.
+
+
+##   Extra
+
+username: swh
+password: swh123
+hostname: raspberrypi.local
+access it via: ssh swh@swh1234@raspberrypi.local
+
+ssh philipp
+catchphrase: hardware

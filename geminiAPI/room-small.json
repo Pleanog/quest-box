@@ -3,7 +3,7 @@
         { "sensor": "button", "value": "red"},
         {
             "sensor": "rotary_encoder",
-            "value": "17"
+            "value": "1"
         },
         {
             "sensor": "distance_sensor",
@@ -25,7 +25,7 @@
         }
     ],
     "error_path": "game_over",
-    "time_limit": 60,
+    "time_limit": 600,
     "retry_limit": 3,
     "effects": [
         { "actuator": "light", "mode": "pulse", "color": "red"},
