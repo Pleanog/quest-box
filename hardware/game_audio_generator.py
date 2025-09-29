@@ -3,15 +3,15 @@
 import os
 import json
 from colorama import Fore, Style
-from elevenlabsAPI.tts_service import AudioService
+from elevenlabsAPI.tts_service import TTSService
 from filename_service import FileNameService
 
-colorama.init(autoreset=True)
+# colorama.init(autoreset=True)
 
 class GameAudioGenerator:
     """Generates and saves all required audio files for a new game configuration."""
 
-    def __init__(self, base_dir: str, audio_service: AudioService):
+    def __init__(self, base_dir: str, audio_service: TTSService):
         self.file_service = FileNameService(base_dir)
         self.audio_service = audio_service
 

@@ -87,9 +87,9 @@ if __name__ == "__main__":
     print(f"{Fore.BLUE}--- Running TTSE Service Test ---{Style.RESET_ALL}")
     
     # Test a new sound effect
-    test_sentence = "Sword being drawn, then clashing with another blade, and a lound screaming battle cry afterwards"
-    test_game_name = "test-game"
-    test_file_name = "test_sound_effect.mp3"
+    test_sentence = "Sword being swung, then clashing with another blade, and a lound screaming battle cry afterwards"
+    test_game_name = "test-game2"
+    test_file_name = "test_sound_effect2.mp3"
 
     saved_path = service.generate_and_save_sound_effect(
         prompt=test_sentence,

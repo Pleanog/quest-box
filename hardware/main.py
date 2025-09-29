@@ -23,7 +23,7 @@ from vibration_motor_controller import VibrationController
 from bus_manager import I2C_BUS_LOCK
 
 from geminiAPI.gemini_client import generate_room_configuration
-from elevenlabsAPI.tts_service import AudioService
+from elevenlabsAPI.tts_service import TTSService
 from game_audio_generator import GameAudioGenerator
 from filename_service import FileNameService
 
@@ -35,7 +35,9 @@ def main():
     
     # 1. Call Gemini API to generate the game JSON
     # This returns the file-safe name (e.g., 'the-krakens-cache')
-    game_name = generate_room_configuration()
+    # game_name = generate_room_configuration()
+
+    game_name = "the-curse-of-the-krakens-chest"
     
     if not game_name:
         print("FATAL ERROR: Failed to generate a new room configuration. Exiting.")
@@ -43,7 +45,7 @@ def main():
 
     # 2. Initialize Services needed for Audio Generation/Playback
     file_service = FileNameService(str(BASE_DIR))
-    audio_service = AudioService() # Uses the ELEVEN_API_KEY from .env
+    audio_service = TTSService(str(BASE_DIR))
     
     # 3. Generate all audio files for the new game
     audio_generator = GameAudioGenerator(str(BASE_DIR), audio_service)
@@ -77,6 +79,7 @@ def main():
         {"type": "sx1509_button", "value": "yellow", "pin": 4},
         {"type": "sx1509_button", "value": "green", "pin": 5},
         {"type": "sx1509_button", "value": "black", "pin": 13},
+        {"type": "sx1509_button", "value": "black", "pin": 6},
         {"type": "gyro", "value": "shaking"},
         {"type": "rotary_encoder", "name": "rotary_encoder_picture", "clk_pin": 20, "dt_pin": 21, "button_pin": 16},
         {"type": "rotary_encoder", "name": "rotary_encoder_number", "clk_pin": 13, "dt_pin": 19, "button_pin": 26},

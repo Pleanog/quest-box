@@ -1,0 +1,169 @@
+{
+    "title": "The Curse of the Kraken's Chest",
+    "starting_description": "You are a seasoned pirate, marooned on a forgotten isle. Rumors speak of Captain Blackheart's legendary treasure, guarded by a cursed chest that only reveals its secrets to those who prove their worth. Three strange mechanisms adorn its ancient surface, each a riddle from the deep.",
+    "themes": [
+        "pirates"
+    ],
+    "inputs": [
+        "button",
+        "rotary_encoder_number",
+        "rotary_encoder_picture",
+        "gyro",
+        "distance_sensor"
+    ],
+    "buttonValues": [
+        "red",
+        "blue",
+        "green",
+        "yellow",
+        "black"
+    ],
+    "rotaryEncoderNumberValues": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10"
+    ],
+    "rotaryEncoderPictureValues": [
+        "dynamite",
+        "knife",
+        "candle",
+        "rope",
+        "key",
+        "book",
+        "dice",
+        "potion",
+        "stick",
+        "compass"
+    ],
+    "gyroValues": [
+        "shaking"
+    ],
+    "distanceSensorValues": [
+        "hovered",
+        "covered"
+    ],
+    "actuators": [
+        "light",
+        "vibration"
+    ],
+    "lightModes": [
+        "static",
+        "blink",
+        "pulse",
+        "fade"
+    ],
+    "vibrationModes": [
+        "vibrate",
+        "rattle"
+    ],
+    "effectsColors": [
+        "red",
+        "green",
+        "blue",
+        "yellow",
+        "white",
+        "purple"
+    ],
+    "paths": [
+        {
+            "path_name": "The Leviathan's Breath",
+            "description": "A barnacle-encrusted dial with ancient numbers, next to a panel of colored buttons. An eerie inscription glows faintly: 'Count the monster's arms, then choose the abyss's hue.'",
+            "hint": "How many mighty limbs does the beast of the deep possess? // What is the shade of the deepest, darkest ocean floor?",
+            "solution_sequence": [
+                {
+                    "sensor": "rotary_encoder_number",
+                    "value": "8"
+                },
+                {
+                    "sensor": "button",
+                    "value": "black"
+                }
+            ],
+            "audio_cue": "deep_sea_rumble.mp3",
+            "effects": [
+                {
+                    "actuator": "vibration",
+                    "mode": "vibrate",
+                    "duration": 7
+                },
+                {
+                    "actuator": "light",
+                    "mode": "pulse",
+                    "color": "blue"
+                }
+            ],
+            "time_limit": 90,
+            "retry_limit": 3,
+            "death_text": "The chest shudders violently, sealing itself against your clumsy attempts. The air grows cold as an unseen force pulls you into the murky depths."
+        },
+        {
+            "path_name": "The Siren's Song",
+            "description": "A curious contraption with a rotating carousel of carved symbols and a small, delicate pendulum. A whisper seems to emanate from it: 'Bind the unwary, then tremble to the melody.'",
+            "hint": "What did the temptress use to secure her victims? // How does the ship react to the siren's powerful call?",
+            "solution_sequence": [
+                {
+                    "sensor": "rotary_encoder_picture",
+                    "value": "rope"
+                },
+                {
+                    "sensor": "gyro",
+                    "value": "shaking"
+                }
+            ],
+            "audio_cue": "siren_hum.mp3",
+            "effects": [
+                {
+                    "actuator": "vibration",
+                    "mode": "rattle",
+                    "duration": 5
+                },
+                {
+                    "actuator": "light",
+                    "mode": "fade",
+                    "color": "purple"
+                }
+            ],
+            "time_limit": 90,
+            "retry_limit": 3,
+            "death_text": "The pendulum swings wildly, striking the carousel. A deafening shriek echoes, and you feel your mind unraveling, lost forever in the siren's illusion."
+        },
+        {
+            "path_name": "The Kraken's Eye",
+            "description": "A large, glassy orb, pulsating with a faint glow, sits above a numerical dial. A cryptic warning is carved around its base: 'Gaze upon the thousand eyes, then cloak its watchful stare.'",
+            "hint": "How many watchful orbs does the great Kraken possess, in legend's grand exaggeration? // To silence its gaze, what must you do to its single luminous eye?",
+            "solution_sequence": [
+                {
+                    "sensor": "rotary_encoder_number",
+                    "value": "10"
+                },
+                {
+                    "sensor": "distance_sensor",
+                    "value": "covered"
+                }
+            ],
+            "audio_cue": "kraken_roar.mp3",
+            "effects": [
+                {
+                    "actuator": "vibration",
+                    "mode": "vibrate",
+                    "duration": 10
+                },
+                {
+                    "actuator": "light",
+                    "mode": "static",
+                    "color": "red"
+                }
+            ],
+            "time_limit": 90,
+            "retry_limit": 3,
+            "death_text": "The orb blazes with an agonizing light, searing your vision. The chest remains impenetrable, its secrets guarded by the eternal darkness of the deep."
+        }
+    ]
+}

@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from colorama import Fore, Style
 from hardware.filename_service import FileNameService 
 
-colorama.init(autoreset=True)
+# colorama.init(autoreset=True)
 
 # Define the base directory for the entire project
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -131,7 +131,7 @@ def generate_room_configuration() -> str | None:
     """
 
     # 3. Configure and call the model
-    model = genai.GenerativeModel('gemini-1.5-flash')
+    model = genai.GenerativeModel('gemini-2.5-flash')
     try:
         response = model.generate_content(prompt)
     except Exception as e:

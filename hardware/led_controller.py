@@ -147,7 +147,7 @@ if __name__ == "__main__":
     print("Test sequence started.")
     try:
         controller.set_effect("static", "green")
-        time.sleep(2)
+        time.sleep(10)
         controller.set_effect("blink", "red", repeat=3, blink_interval=0.4)
         time.sleep(3)
         controller.set_effect("pulse", "blue", repeat=2, delay=0.02)

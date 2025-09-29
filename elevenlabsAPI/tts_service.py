@@ -1,17 +1,18 @@
 # tts_service.py
- 
+
 import os
 import requests
 from dotenv import load_dotenv
 import colorama
 from colorama import Fore, Style
-from elevenlabs_client import ElevenLabsClient
-from hardware.filename_service import FileNameService 
+from elevenlabsAPI.elevenlabs_manager import ElevenLabsClient
+from hardware.filename_service import FileNameService
 
 colorama.init(autoreset=True)
 
 # Load environment variables
-load_dotenv(dotenv_path=ENV_PATH)
+load_dotenv()
+
 class TTSService: # Renamed from AudioService for clarity
     def __init__(self, base_dir: str, default_voice_id="2EiwWnXFnvU5JabPnv8n"):
         self.eleven_client = ElevenLabsClient()
@@ -59,7 +60,7 @@ class TTSService: # Renamed from AudioService for clarity
             return None
 
         # Save audio to the specified game directory
-        game_audio_dir = self._create_game_directory(game_name)
+        game_audio_dir = self.file_service.get_audio_folder_path(game_name)
         file_path = os.path.join(game_audio_dir, file_name)
 
         print(f"{Fore.CYAN}Saving audio to: {file_path}{Style.RESET_ALL}")
@@ -72,8 +73,8 @@ if __name__ == "__main__":
     # Example Usage for testing
     service = TTSService()
     test_sentence = "Hello, this is a test from the audio service."
-    test_game_name = "test-game"
-    test_file_name = "test_intro.mp3"
+    test_game_name = "test-game2"
+    test_file_name = "test_intro2.mp3"
 
     print(f"{Fore.BLUE}--- Running Audio Service Test ---{Style.RESET_ALL}")
     

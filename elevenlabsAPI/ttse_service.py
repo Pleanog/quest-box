@@ -5,7 +5,7 @@ import colorama
 # Note: We need to import load_dotenv, ElevenLabs, and requests if using them directly, 
 # but we will rely on elevenlabs_client to handle the setup/key/client object.
 from dotenv import load_dotenv # Needed for initialization if not handled in elevenlabs_client
-from elevenlabs_client import ElevenLabsClient
+from elevenlabsAPI.elevenlabs_manager import ElevenLabsClient
 import requests # Needed to catch specific HTTP exceptions if the elevenlabs library doesn't handle them
 from colorama import Fore, Style
 
@@ -14,7 +14,7 @@ colorama.init(autoreset=True)
 
 # --- IMPORTS FOR MODULARITY ---
 # Assuming these modules are accessible in your environment
-from elevenlabs_client import ElevenLabsClient 
+from elevenlabsAPI.elevenlabs_manager import ElevenLabsClient 
 from filename_service import FileNameService 
 # ------------------------------
 
