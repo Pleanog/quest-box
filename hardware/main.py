@@ -23,7 +23,7 @@ from vibration_motor_controller import VibrationController
 from bus_manager import I2C_BUS_LOCK
 
 from geminiAPI.gemini_client import generate_room_configuration
-from elevenlabsAPI.tts_service import AudioService
+from elevenlabsAPI.tts_service import TTSService
 from game_audio_generator import GameAudioGenerator
 from filename_service import FileNameService
 

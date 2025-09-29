@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from colorama import Fore, Style
 from hardware.filename_service import FileNameService 
 
-colorama.init(autoreset=True)
+# colorama.init(autoreset=True)
 
 # Define the base directory for the entire project
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
