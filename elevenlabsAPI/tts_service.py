@@ -1,65 +1,49 @@
-# tts-service.py
+# tts_service.py
  
 import os
 import requests
 from dotenv import load_dotenv
 import colorama
 from colorama import Fore, Style
+from elevenlabs_client import ElevenLabsClient
+from hardware.filename_service import FileNameService 
 
-# Initialize colorama for cross-platform colored output
 colorama.init(autoreset=True)
-
-# Define base directories
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-ENV_PATH = os.path.join(BASE_DIR, '.env')
 
 # Load environment variables
 load_dotenv(dotenv_path=ENV_PATH)
-
-class AudioService:
-    def __init__(self, default_voice_id="2EiwWnXFnvU5JabPnv8n"):
-        self.api_key = os.getenv("ELEVEN_API_KEY")
+class TTSService: # Renamed from AudioService for clarity
+    def __init__(self, base_dir: str, default_voice_id="2EiwWnXFnvU5JabPnv8n"):
+        self.eleven_client = ElevenLabsClient()
+        self.file_service = FileNameService(base_dir) # <--- Use the central file service
         self.default_voice_id = default_voice_id
-
-        if not self.api_key:
-            print(f"{Fore.RED}Error: ELEVEN_API_KEY not found in .env file.{Style.RESET_ALL}")
     
-    def _create_game_directory(self, game_name):
-        """Creates the game-specific audio directory if it doesn't exist."""
-        game_audio_dir = os.path.join(BASE_DIR, 'games', game_name)
-        if not os.path.exists(game_audio_dir):
-            print(f"{Fore.YELLOW}Creating game audio directory: {game_audio_dir}{Style.RESET_ALL}")
-            os.makedirs(game_audio_dir)
-        return game_audio_dir
-
     def generate_and_save_audio(self, text, file_name, game_name, voice_id=None):
-        """
-        Generates audio from text and saves it to a game-specific directory.
-
-        Args:
-            text (str): The text to be converted to speech.
-            file_name (str): The name for the audio file (e.g., 'intro.mp3').
-            game_name (str): The name of the game for directory organization.
-            voice_id (str, optional): The ElevenLabs voice ID. Defaults to the
-                                      service's default voice.
-        Returns:
-            str: The full path to the saved audio file, or None if failed.
-        """
-        if not self.api_key:
+        if not self.eleven_client.is_ready():
             return None
 
         voice_id = voice_id if voice_id else self.default_voice_id
 
-        print(f"{Fore.CYAN}Connecting to ElevenLabs API for '{game_name}'...{Style.RESET_ALL}")
+        # --- Use file_service for path creation ---
+        # The new audio folder path: games/gamename/audio
+        game_audio_dir = self.file_service.get_audio_folder_path(game_name)
+        file_path = os.path.join(game_audio_dir, file_name)
+
+        # 1. Ensure audio directory exists
+        if not os.path.exists(game_audio_dir):
+             os.makedirs(game_audio_dir) # Create folder via os, but use service path
+
+        print(f"{Fore.CYAN}Connecting to ElevenLabs API for TTS: '{game_name}'...{Style.RESET_ALL}")
         
+        # Use the official client's methods or stick to direct requests if preferred
         api_url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice_id}"
         headers = {
-            "Content-Type": "application/json",
-            "xi-api-key": self.api_key
+             "Content-Type": "application/json",
+             "xi-api-key": self.eleven_client.api_key # Use the shared key
         }
         data = {
-            "text": text,
-            "model_id": "eleven_multilingual_v2"
+             "text": text,
+             "model_id": "eleven_multilingual_v2"
         }
 
         try:
@@ -82,12 +66,11 @@ class AudioService:
         with open(file_path, 'wb') as f:
             f.write(audio_data)
         print(f"{Fore.GREEN}Audio saved successfully.{Style.RESET_ALL}")
-        
         return file_path
 
 if __name__ == "__main__":
     # Example Usage for testing
-    service = AudioService()
+    service = TTSService()
     test_sentence = "Hello, this is a test from the audio service."
     test_game_name = "test-game"
     test_file_name = "test_intro.mp3"

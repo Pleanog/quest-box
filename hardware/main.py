@@ -22,7 +22,39 @@ from led_controller import LEDController
 from vibration_motor_controller import VibrationController
 from bus_manager import I2C_BUS_LOCK
 
+from geminiAPI.gemini_client import generate_room_configuration
+from elevenlabsAPI.tts_service import AudioService
+from game_audio_generator import GameAudioGenerator
+from filename_service import FileNameService
+
+BASE_DIR = Path(__file__).parent.parent
+
 def main():
+    # --- 1. GAME GENERATION AND AUDIO PREP ---
+    print("--- 1. Initializing Game Generation ---")
+    
+    # 1. Call Gemini API to generate the game JSON
+    # This returns the file-safe name (e.g., 'the-krakens-cache')
+    game_name = generate_room_configuration()
+    
+    if not game_name:
+        print("FATAL ERROR: Failed to generate a new room configuration. Exiting.")
+        return
+
+    # 2. Initialize Services needed for Audio Generation/Playback
+    file_service = FileNameService(str(BASE_DIR))
+    audio_service = AudioService() # Uses the ELEVEN_API_KEY from .env
+    
+    # 3. Generate all audio files for the new game
+    audio_generator = GameAudioGenerator(str(BASE_DIR), audio_service)
+    audio_success = audio_generator.generate_all_game_audio(game_name)
+    
+    if not audio_success:
+        print("Warning: Some audio files failed to generate. Continuing with available files.")
+        
+    # --- 2. START GAME THREADS ---
+    print("--- 2. Starting Game System ---")
+
     # Queues for inter-thread communication
     input_event_queue = Queue()
     output_command_queue = Queue()
@@ -30,6 +62,13 @@ def main():
     # Initialize Controllers
     led_controller = LEDController()
     vibration_controller = VibrationController()
+
+    # Add controllers to the OutputManager
+    output_manager_instance = OutputManager(output_command_queue)
+    output_manager_instance.add_controller("light", led_controller)
+    output_manager_instance.add_controller("vibration", vibration_controller)
+    output_manager_instance.add_controller("tts_service", audio_service)
+    # output_manager_instance.add_controller("sound", sound_controller)
 
     # Define device configurations
     device_configs = [
@@ -47,25 +86,13 @@ def main():
     # Initialize Managers, passing the necessary queues
     # input_manager_instance = InputManager(input_event_queue)
     input_manager_instance = InputManager(input_event_queue, bus_lock=I2C_BUS_LOCK, device_configs=device_configs)
-    output_manager_instance = OutputManager(output_command_queue)
-
-    # Add controllers to the OutputManager
-    output_manager_instance.add_controller("light", led_controller)
-    output_manager_instance.add_controller("vibration", vibration_controller)
-    # output_manager_instance.add_controller("sound", sound_controller)
-
 
     # Add devices to the Input Manager
     for config in device_configs:
         input_manager_instance.add_device(config)
-
-    # Call and run the gemini client to get the room configuration
-    # generate_room_configuration()
     
     # Initialize Game Sequence, passing the event queue
-    script_dir = Path(__file__).parent.parent
-    # config_path = script_dir / "geminiAPI" / "room-small.json"
-    config_path = script_dir / "geminiAPI" / "room.json"
+    config_path = file_service.get_game_json_path(game_name)
     game_sequence_instance = GameSequence(
         config_path=config_path,
         input_queue=input_event_queue,

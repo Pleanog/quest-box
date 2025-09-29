@@ -3,35 +3,77 @@ import os
 import json
 import codecs
 from dotenv import load_dotenv
+from colorama import Fore, Style
+from hardware.filename_service import FileNameService 
+
+colorama.init(autoreset=True)
+
+# Define the base directory for the entire project
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# GAMES_DIR = os.path.join(BASE_DIR, 'games')
+# AVAILABLE_GAMES_FILE = os.path.join(GAMES_DIR, 'available_games.txt')
+file_service = FileNameService(BASE_DIR)
+
+def _sanitize_game_name(title: str) -> str:
+    """Converts a title into a file-safe, lowercase, hyphenated name."""
+    # Convert to lowercase and replace spaces/non-alphanumeric chars with hyphens
+    return title.lower().strip().replace(' ', '-').replace("'", "").replace(":", "").replace("!", "")
+
+def _register_new_game(game_name: str) -> None:
+    games_dir = file_service.get_game_folder_path("") # Gets the 'games' directory
+    available_games_file = os.path.join(games_dir, 'available_games.txt')
+    """Adds the new game name to the available_games.txt file."""
+    try:
+        if not os.path.exists(games_dir):
+            os.makedirs(games_dir)
+            
+        # Append the new game name to the file with a newline
+        with open(available_games_file, 'a') as f:
+            f.write(f"{game_name}\n")
+        print(f"{Fore.GREEN}Game registered in: {available_games_file}{Style.RESET_ALL}")
+    except IOError as e:
+        print(f"{Fore.RED}Error registering game: {e}{Style.RESET_ALL}")
+
 
 """
 Generates a new room.json configuration by calling the Gemini API.
 
 Returns:
-    bool: True if the file was created successfully, False otherwise.
+    str: The name of the generated game or None if the generation failed.
 """
-def generate_room_configuration():
+def generate_room_configuration() -> str | None:
     # Load environment variables
     load_dotenv()
     gemini_api_key = os.getenv('GEMINI_API_KEY')
+    
+    if not gemini_api_key:
+        print(f"{Fore.RED}Error: GEMINI_API_KEY not found in .env file.{Style.RESET_ALL}")
+        return None
+        
     genai.configure(api_key=gemini_api_key)
 
-    template_file_path = '/home/philipp/quest-box/geminiAPI/rooms_template.json'
-    output_file_path = '/home/philipp/quest-box/geminiAPI/room.json'
-    example_file_path = '/home/philipp/quest-box/geminiAPI/rooms_example.json'
+    # --- Existing file paths for templates (Using BASE_DIR for better flexibility) ---
+    template_file_path = os.path.join(BASE_DIR, 'geminiAPI', 'rooms_template.json')
+    example_file_path = os.path.join(BASE_DIR, 'geminiAPI', 'rooms_example.json')
 
     # 1. Read the JSON files
-    with open(template_file_path, 'r') as file:
-        json_template_data = json.load(file)
+    try:
+        with open(template_file_path, 'r') as file:
+            json_template_data = json.load(file)
 
-    with open(example_file_path, 'r') as file:
-        json_example_data = json.load(file)
+        with open(example_file_path, 'r') as file:
+            json_example_data = json.load(file)
+    except FileNotFoundError as e:
+        print(f"{Fore.RED}Error reading template/example files: {e}{Style.RESET_ALL}")
+        return None
+    except json.JSONDecodeError as e:
+        print(f"{Fore.RED}Error decoding JSON in template/example files: {e}{Style.RESET_ALL}")
+        return None
 
-    # 2. Convert the Python dictionary to a JSON string
+    # 2. Convert the Python dictionary to a JSON string (Prompt Generation)
     json_template_string = json.dumps(json_template_data, indent=2)
     json_example_string = json.dumps(json_example_data, indent=2)
 
-    # 3. Create a prompt that includes the JSON string
     prompt = f"""
     You are a Master Riddle Designer for a physical puzzle box. Your primary goal is to create puzzles where the "hint" provides a clear, logical, and solvable path to the "solution_sequence". The player must be able to deduce the correct actions by thinking critically about the hint and the story's context.
 
@@ -88,64 +130,56 @@ def generate_room_configuration():
 
     """
 
-    # Configure and call the model
+    # 3. Configure and call the model
     model = genai.GenerativeModel('gemini-1.5-flash')
-    response = model.generate_content(prompt)
-
-    # Print the generated JSON
-    # print(response.text)
-
     try:
-        with open(output_file_path, 'w') as json_file:
-            # Use json.dump() to write the new data to the file
-            json.dump(response.text, json_file, indent=4)
-        print(f"Successfully replaced the content of '{output_file_path}' with the new data.")
-    except IOError as e:
-        print(f"An error occurred: {e}")
-        return False
-    
-    # Post-process the file to clean it up
+        response = model.generate_content(prompt)
+    except Exception as e:
+        print(f"{Fore.RED}Error calling Gemini API: {e}{Style.RESET_ALL}")
+        return None
+
+    # 4. Save and Post-process the file
     try:
-        # ## Step 1: Read the original, messy content from the file
-        with open(output_file_path, 'r', encoding='utf-8') as file:
-            raw_content = file.read()
-
-        # ## Step 2: Remove first and last character
-        cleaned_content = raw_content[1:-1]
-
-        # Decode escape sequences like \n, \", etc.
-        cleaned_content = codecs.decode(cleaned_content, 'unicode_escape')
-
-        # ## Step 3: Overwrite the original file with the cleaned content
-        with open(output_file_path, 'w', encoding='utf-8') as file:
-            file.write(cleaned_content)
+        raw_content = response.text
         
-        print("✅ File has been cleaned and overwritten.")
-
-        # ## Step 4: Parse the cleaned string and use the data
+        cleaned_content = raw_content.strip()
+        if cleaned_content.startswith('"') and cleaned_content.endswith('"'):
+            cleaned_content = cleaned_content[1:-1]
+        
+        cleaned_content = codecs.decode(cleaned_content, 'unicode_escape')
+        
         data = json.loads(cleaned_content)
         
-        # print(f"Title: {data['title']}")
-        # print(f"Hint for the first path: {data['paths'][0]['hint']}")
+        game_title = data.get("title", "untitled-game")
+        game_name = _sanitize_game_name(game_title)
+        
+        game_folder_path = file_service.get_game_folder_path(game_name) # <--- USE SERVICE
+        output_file_path = file_service.get_game_json_path(game_name)    # <--- USE SERVICE
+                
+        if not os.path.exists(game_folder_path):
+            print(f"{Fore.YELLOW}Creating game directory: {game_folder_path}{Style.RESET_ALL}")
+            os.makedirs(game_folder_path)
 
-    except FileNotFoundError:
-        print(f"Error: The file at '{output_file_path}' was not found.")
-        return False
+        with open(output_file_path, 'w', encoding='utf-8') as file:
+             json.dump(data, file, indent=4)
+        
+        print(f"{Fore.GREEN}✅ Configuration saved to: {output_file_path}{Style.RESET_ALL}")
+
+        _register_new_game(game_name)
+        
+        # Return the game name for use in main.py
+        return game_name
+
     except json.JSONDecodeError as e:
-        print(f"Error: The content is not valid JSON after cleaning. Details: {e}")
-        return False
-    except (KeyError, IndexError) as e:
-        print(f"Error: The JSON is valid, but is missing an expected key or item: {e}")
-        return False
+        print(f"{Fore.RED}Error: Failed to parse valid JSON from Gemini output. Details: {e}{Style.RESET_ALL}")
+        return None
     except Exception as e:
-        print(f"An unexpected error occurred: {e}")
-        return False
-
-    return True
+        print(f"{Fore.RED}An unexpected error occurred during file processing: {e}{Style.RESET_ALL}")
+        return None
 
 if __name__ == "__main__":
-    success = generate_room_configuration()
-    if success:
-        print("Room configuration generated successfully.")
+    generated_game_name = generate_room_configuration()
+    if generated_game_name:
+        print(f"\nGame configuration successfully generated and named: {Fore.CYAN}{generated_game_name}{Style.RESET_ALL}")
     else:
-        print("Failed to generate room configuration.")
+        print(f"{Fore.RED}Failed to generate room configuration.{Style.RESET_ALL}")
