@@ -3,7 +3,7 @@
   "starting_description": "You're a lone prospector in the dusty town of Rattlesnake Gulch, seeking the legendary lost gold of 'One-Eyed Jack'. An old chest sits before you, rumored to hold the key to the treasure. It's locked with three distinct, strange contraptions.",
   "themes": ["wild west"],
   "inputs": ["button", "rotary_encoder_number", "rotary_encoder_picture", "gyro", "distance_sensor"],
-  "buttonValues": ["red", "blue", "green", "yellow", "black"],
+  "buttonValues": ["red", "blue", "green", "yellow"],
   "rotaryEncoderNumberValues": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
   "rotaryEncoderPictureValues": ["dynamite", "knife", "candle", "rope", "key", "book", "dice", "potion", "stick", "compass"],
   "gyroValues": ["shaking"],
