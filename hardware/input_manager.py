@@ -157,10 +157,13 @@ if __name__ == "__main__":
     # {"type": "gyro", "value": "shaking"}, # TODO define the pin here!
     device_configs = [
         
-        {"type": "sx1509_button", "value": "black", "pin": 2},
-        {"type": "sx1509_button", "value": "black", "pin": 3},
+        {"type": "sx1509_button", "value": "repeat", "pin": 2},
+        {"type": "sx1509_button", "value": "hint", "pin": 3},
         {"type": "sx1509_button", "value": "yellow", "pin": 4},
-        
+        {"type": "sx1509_button", "value": "red", "pin": 1},
+        {"type": "sx1509_button", "value": "green", "pin": 14},
+        {"type": "sx1509_button", "value": "blue", "pin": 13},
+        {"type": "gyro", "value": "shaking"},
         {"type": "rotary_encoder", "name": "rotary_encoder_picture", "clk_pin": 20, "dt_pin": 21, "button_pin": 16},
         {"type": "rotary_encoder", "name": "rotary_encoder_number", "clk_pin": 13, "dt_pin": 19, "button_pin": 26},
         {"type": "distance_sensor", "trigger_pin": 23, "echo_pin": 24},

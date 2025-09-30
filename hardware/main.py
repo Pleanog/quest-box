@@ -61,12 +61,12 @@ def main():
 
     # Define device configurations (Hint and Repeat are crucial here)
     device_configs = [
-        {"type": "sx1509_button", "value": "red", "pin": 2},
-        {"type": "sx1509_button", "value": "blue", "pin": 12},
+        {"type": "sx1509_button", "value": "repeat", "pin": 2}, # MENU SWITCH GAME/REPEAT
+        {"type": "sx1509_button", "value": "hint", "pin": 3}, # MENU START GAME/HINT
         {"type": "sx1509_button", "value": "yellow", "pin": 4},
-        {"type": "sx1509_button", "value": "green", "pin": 5},
-        {"type": "sx1509_button", "value": "hint", "pin": 13},     # MENU/HINT
-        {"type": "sx1509_button", "value": "repeat", "pin": 6},   # MENU/REPEAT
+        {"type": "sx1509_button", "value": "red", "pin": 1},
+        {"type": "sx1509_button", "value": "green", "pin": 14},
+        {"type": "sx1509_button", "value": "blue", "pin": 13},
         {"type": "gyro", "value": "shaking"},
         {"type": "rotary_encoder", "name": "rotary_encoder_picture", "clk_pin": 20, "dt_pin": 21, "button_pin": 16},
         {"type": "rotary_encoder", "name": "rotary_encoder_number", "clk_pin": 13, "dt_pin": 19, "button_pin": 26},

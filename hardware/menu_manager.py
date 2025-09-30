@@ -8,7 +8,7 @@ from typing import Literal
 
 from filename_service import FileNameService 
 
-colorama.init(autoreset=True)
+#colorama.init(autoreset=True)
 
 class MenuManager:
     """Handles the initial game selection menu."""
@@ -105,7 +105,7 @@ class MenuManager:
                 continue
             
             # Check for hint/switch button press
-            if input_event.get('value') == self.HINT_BUTTON:
+            if input_event.value == self.HINT_BUTTON:
                 # Cycle through options: Generate -> Game 1 -> Game 2 -> ... -> Generate
                 self.current_selection_index = (self.current_selection_index + 1) % (len(self.available_games) + 1)
                 if self.current_selection_index == len(self.available_games):
@@ -114,7 +114,7 @@ class MenuManager:
                 self._print_menu_state()
                 
             # Check for repeat/start button press
-            elif input_event.get('value') == self.REPEAT_BUTTON:
+            elif input_event.value == self.REPEAT_BUTTON:
                 self.state_game_name = self._get_current_selection()
                 print(f"\n{Fore.GREEN}STARTING: {self.state_game_name}{Style.RESET_ALL}")
                 return self.state_game_name
