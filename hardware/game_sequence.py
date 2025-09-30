@@ -10,8 +10,6 @@ from output_manager import OutputManager
 # from filename_service import FileNameService
 from colorama import Fore, Style
 
-pygame.mixer.init()
-
 #  ---- Registry --------
 SENSOR_REGISTRY = {
     "button": {
@@ -96,7 +94,7 @@ def _normalize_and_validate_step(step: dict) -> tuple[str, dict]:
 
 # -------- Engine --------
 class GameSequence:
-    def __init__(self, config_path: Path, input_queue: queue.Queue, output_manager: OutputManager, game_name: str,):
+    def __init__(self, config_path: Path, input_queue: queue.Queue, output_manager: OutputManager, game_name: str, file_service):
         self.config_path = config_path
         self.input_queue = input_queue
         self.output_manager = output_manager
@@ -105,6 +103,7 @@ class GameSequence:
         self.stop_timer_flag = threading.Event()
         self.start_time_global = 0
         self.sensor_state = {}
+        self.file_service = file_service
         # Stores the text of the last spoken/printed description or hint
         self.last_spoken_text = ""
         self.last_audio_filename = ""
@@ -159,98 +158,126 @@ class GameSequence:
             
             time.sleep(1)
 
+    ###############################################################################
+    # AUDIO PLAYBACK METHODS - DIRECTLY USING PYGAME (NO OUTPUT MANAGER)
+    ###############################################################################
+
     def _play_audio_and_wait(self, text: str, audio_type: str, path_identifier: str):
         """
-        Sends a command to play audio and BLOCKS until the audio has finished playing.
+        Directly finds and plays an audio file, blocking until it's finished.
         """
         print(text)
-        
-        self.output_manager.command_queue.put(
-            ("sound", {
-                "type_prefix": audio_type, 
-                "path_name": path_identifier,
-                "game_name": self.game_name,
-                "loop": False
-            })
-        )
-        print(f"{Style.DIM}--- GameSequence: Audio command for '{audio_type}' sent. Waiting... ---{Style.RESET_ALL}")
+        try:
+            # 1. Build the file path directly
+            file_name = self.file_service.get_audio_filename(audio_type, path_identifier)
+            folder = self.file_service.get_audio_folder_path(self.game_name)
+            path = Path(folder) / file_name
 
-        # Wait for the audio to START playing
-        started = False
-        print(f"{Style.DIM}  - Waiting for sound to START...{Style.RESET_ALL}")
-        for i in range(30):
-            if pygame.mixer.music.get_busy():
-                print(f"{Style.DIM}  - Sound has STARTED. (after {i * 0.1:.1f}s){Style.RESET_ALL}")
-                started = True
-                break
-            time.sleep(0.1)
+            if not path.exists():
+                print(f"{Fore.RED}Audio Error: File not found: {path}{Style.RESET_ALL}")
+                return
+            
+            # 2. Play the sound using Pygame directly
+            pygame.mixer.music.stop()
+            pygame.mixer.music.load(str(path))
+            pygame.mixer.music.play()
+            print(f"{Fore.GREEN}🔊 Playing: {path.name}{Style.RESET_ALL}")
 
-        if not started:
-            print(f"{Fore.YELLOW}Warning: Sound did not start playing within the time limit.{Style.RESET_ALL}")
-            return
+            # 3. Wait for it to finish
+            while pygame.mixer.music.get_busy():
+                time.sleep(0.1)
+            print(f"{Style.DIM}  - Sound has FINISHED.{Style.RESET_ALL}")
 
-        # Wait for the audio to FINISH playing
-        print(f"{Style.DIM}  - Waiting for sound to FINISH...{Style.RESET_ALL}")
-        while pygame.mixer.music.get_busy():
-            time.sleep(0.1)
-        print(f"{Style.DIM}  - Sound has FINISHED.{Style.RESET_ALL}")
+        except Exception as e:
+            print(f"{Fore.RED}Direct Playback Error: {e}{Style.RESET_ALL}")
 
     def _play_audio_non_blocking(self, text: str, audio_type: str, path_identifier: str, repeat: bool = False):
         """
-        Sends a command to play audio but does NOT block. Used for hints, repeats, etc.
+        Directly finds and plays an audio file without blocking.
         """
         if repeat:
             print(f"{Fore.CYAN}🔁 (Repeat) Playing: {audio_type} for {path_identifier}{Fore.RESET}")
         else:
             print(text)
-        
-        # Send the command and return immediately
-        self.output_manager.command_queue.put(
-            ("sound", {
-                "type_prefix": audio_type, 
-                "path_name": path_identifier,
-                "game_name": self.game_name,
-                "loop": False
-            })
-        )
-
-    # def _wait_for_audio_to_finish(self):
-    #     """Pauses the game sequence while the sound controller is busy."""
-    #     # This gives a brief moment for the command to reach the sound thread
-    #     time.sleep(0.2) 
-    #     while pygame.mixer.music.get_busy():
-    #         time.sleep(0.1) # Wait in small intervals
-
-    # def _play_audio(self, text: str, audio_type: str, path_identifier: str, repeat: bool = False):
-    #     """
-    #     Plays an audio file by sending type and identifier to the SoundController.
-        
-    #     Args:
-    #         text (str): The text content (for console output and last spoken record).
-    #         audio_type (str): The type of audio ('starting_description', 'description', 'hint', 'death_text').
-    #         path_identifier (str): The name of the path (or game_name for starting text).
-    #         repeat (bool): Whether this is a repeat command.
-    #     """
-    #     self.last_spoken_text = text
-        
-    #     # NOTE: We no longer store last_audio_filename, as the SoundController now computes it.
-    #     # self.last_audio_filename = audio_file_name 
-        
-    #     if repeat:
-    #         # We don't print the full text on repeat, just the action
-    #         print(f"{Fore.CYAN}🔁 (Repeat) Playing: {audio_type} for {path_identifier}{Fore.RESET}")
-    #     else:
-    #         print(text)
             
-    #     # Send the command with all necessary descriptive elements
+        try:
+            # 1. Build the file path directly
+            file_name = self.file_service.get_audio_filename(audio_type, path_identifier)
+            folder = self.file_service.get_audio_folder_path(self.game_name)
+            path = Path(folder) / file_name
+
+            if not path.exists():
+                print(f"{Fore.RED}Audio Error: File not found: {path}{Style.RESET_ALL}")
+                return
+
+            # 2. Play the sound using Pygame directly
+            pygame.mixer.music.stop()
+            pygame.mixer.music.load(str(path))
+            pygame.mixer.music.play()
+            print(f"{Fore.GREEN}🔊 Playing: {path.name}{Style.RESET_ALL}")
+
+        except Exception as e:
+            print(f"{Fore.RED}Direct Playback Error: {e}{Style.RESET_ALL}")
+
+    ###############################################################################
+
+
+    # old audio functions, use sound controller in output manager instead
+    # def _play_audio_and_wait(self, text: str, audio_type: str, path_identifier: str):
+    #     """
+    #     Sends a command to play audio and BLOCKS until the audio has finished playing.
+    #     """
+    #     print(text)
+        
     #     self.output_manager.command_queue.put(
     #         ("sound", {
     #             "type_prefix": audio_type, 
-    #             "path_name": path_identifier, # e.g., 'The Sheriffs Safe' or 'the-sheriffs-safe'
-    #             "game_name": self.game_name,   # e.g., 'the-sheriffs-safe'
-    #             "loop": False                  # Assuming playback is not looping here
+    #             "path_name": path_identifier,
+    #             "game_name": self.game_name,
+    #             "loop": False
     #         })
     #     )
+    #     print(f"{Style.DIM}--- GameSequence: Audio command for '{audio_type}' sent. Waiting... ---{Style.RESET_ALL}")
+
+    #     # Wait for the audio to START playing
+    #     started = False
+    #     print(f"{Style.DIM}  - Waiting for sound to START...{Style.RESET_ALL}")
+    #     for i in range(30):
+    #         if pygame.mixer.music.get_busy():
+    #             print(f"{Style.DIM}  - Sound has STARTED. (after {i * 0.1:.1f}s){Style.RESET_ALL}")
+    #             started = True
+    #             break
+    #         time.sleep(0.1)
+
+    #     if not started:
+    #         print(f"{Fore.YELLOW}Warning: Sound did not start playing within the time limit.{Style.RESET_ALL}")
+    #         return
+
+    #     # Wait for the audio to FINISH playing
+    #     print(f"{Style.DIM}  - Waiting for sound to FINISH...{Style.RESET_ALL}")
+    #     while pygame.mixer.music.get_busy():
+    #         time.sleep(0.1)
+    #     print(f"{Style.DIM}  - Sound has FINISHED.{Style.RESET_ALL}")
+
+    # def _play_audio_non_blocking(self, text: str, audio_type: str, path_identifier: str, repeat: bool = False):
+    #     """
+    #     Sends a command to play audio but does NOT block. Used for hints, repeats, etc.
+    #     """
+    #     if repeat:
+    #         print(f"{Fore.CYAN}🔁 (Repeat) Playing: {audio_type} for {path_identifier}{Fore.RESET}")
+    #     else:
+    #         print(text)
+        
+    #     # Send the command and return immediately
+    #     self.output_manager.command_queue.put(
+    #         ("sound", {
+    #             "type_prefix": audio_type, 
+    #             "path_name": path_identifier,
+    #             "game_name": self.game_name,
+    #             "loop": False
+    #         })
+    #     )
+
 
     def run_sequence(self):
         """The main entry point to start the entire game quest."""

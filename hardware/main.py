@@ -41,7 +41,7 @@ BASE_DIR = Path(__file__).parent.parent
 
 def main():
     try:
-        # pygame.init()  # Initialize Pygame
+        pygame.init()  # Initialize Pygame
 
         # --- 1. INITIALIZE THREAD MANAGERS (needed for menu input/output) ---
         print("--- 1. Initializing System Components ---")
@@ -133,6 +133,7 @@ def main():
             input_queue=input_event_queue,
             output_manager=output_manager_instance,
             game_name=game_name,
+            file_service=file_service
         )
 
         print("Starting game loop...")
