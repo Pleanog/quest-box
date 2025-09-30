@@ -14,7 +14,7 @@ from rotary_encoder_controller import RotaryEncoderController
 from distance_controller import DistanceController
 
 IMAGE_OPTIONS = ["dynamite", "knife", "candle", "rope", "key", "book", "dice", "potion", "stick", "compass"] # 10 images
-NUMBER_OPTIONS = [str(i) for i in range(1, 11)] # 10 numbers
+NUMBER_OPTIONS = [str(i) for i in range(0, 10)] # 10 numbers
 
 class InputManager:
     def __init__(self, event_queue, bus_lock, device_configs):
@@ -149,15 +149,9 @@ if __name__ == "__main__":
     q = queue.Queue()
     bus_lock = Lock()
 
-    # {"type": "sx1509_button", "value": "red", "pin": 2},
-    # {"type": "sx1509_button", "value": "blue", "pin": 12},
-    # {"type": "sx1509_button", "value": "yellow", "pin": 4},
-    # {"type": "sx1509_button", "value": "green", "pin": 5},
-    # {"type": "sx1509_button", "value": "black", "pin": 13},
-    # {"type": "gyro", "value": "shaking"}, # TODO define the pin here!
     device_configs = [
         
-        {"type": "sx1509_button", "value": "repeat", "pin": 2},
+        {"type": "sx1509_button", "value": "repeat", "pin": 11},
         {"type": "sx1509_button", "value": "hint", "pin": 3},
         {"type": "sx1509_button", "value": "yellow", "pin": 4},
         {"type": "sx1509_button", "value": "red", "pin": 1},

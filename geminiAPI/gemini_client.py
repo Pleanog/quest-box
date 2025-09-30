@@ -102,7 +102,7 @@ def generate_room_configuration() -> str | None:
     **Detailed Field Constraints:**
     - "inputs": Choose from: "button", "rotary_encoder_number", "rotary_encoder_picture", "gyro", "distance_sensor".
     - "buttonValues": Choose from: "red", "blue", "green", "yellow".
-    - "rotaryEncoderNumberValues": A number from "1" to "10".
+    - "rotaryEncoderNumberValues": A number from "0" to "9".
     - "rotaryEncoderPictureValues": An item from the list: "dynamite", "knife", "candle", "rope", "key", "book", "dice", "potion", "stick".
     - "gyroValues": Must be "shaking".
     - "distanceSensorValues": Choose from: "hovered", "covered".

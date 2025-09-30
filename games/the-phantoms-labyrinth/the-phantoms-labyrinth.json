@@ -1,0 +1,169 @@
+{
+    "title": "The Phantom's Labyrinth",
+    "starting_description": "You find yourself trapped in Blackwood Manor, a place whispered to be cursed and inhabited by restless spirits. To escape, you must appease the resident phantom by solving three arcane puzzles that guard the exit.",
+    "themes": [
+        "haunted house"
+    ],
+    "inputs": [
+        "button",
+        "rotary_encoder_number",
+        "rotary_encoder_picture",
+        "gyro",
+        "distance_sensor"
+    ],
+    "buttonValues": [
+        "red",
+        "blue",
+        "green",
+        "yellow"
+    ],
+    "rotaryEncoderNumberValues": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "0"
+    ],
+    "rotaryEncoderPictureValues": [
+        "dynamite",
+        "knife",
+        "candle",
+        "rope",
+        "key",
+        "book",
+        "dice",
+        "potion",
+        "stick",
+        "compass"
+    ],
+    "gyroValues": [
+        "shaking"
+    ],
+    "distanceSensorValues": [
+        "hovered",
+        "covered"
+    ],
+    "actuators": [
+        "light",
+        "vibration"
+    ],
+    "lightModes": [
+        "static",
+        "blink",
+        "pulse",
+        "fade"
+    ],
+    "vibrationModes": [
+        "vibrate",
+        "rattle"
+    ],
+    "effectsColors": [
+        "red",
+        "green",
+        "blue",
+        "yellow",
+        "white",
+        "purple"
+    ],
+    "paths": [
+        {
+            "path_name": "The Phantom's Hour",
+            "description": "A grandfather clock stands before you, its pendulum still. The face has no hands, only a single rotating dial for numbers and four spectral buttons beneath. A faint inscription reads: 'When the spectral hour rings once, confirm its chilling glow.'",
+            "hint": "The spectral hour, when shadows stretch long, rings once. // Confirm your choice with the hue of a chilling moonbeam.",
+            "solution_sequence": [
+                {
+                    "sensor": "rotary_encoder_number",
+                    "value": "1"
+                },
+                {
+                    "sensor": "button",
+                    "value": "blue"
+                }
+            ],
+            "audio_cue": "clock_chime.mp3",
+            "effects": [
+                {
+                    "actuator": "vibration",
+                    "mode": "vibrate",
+                    "duration": 5
+                },
+                {
+                    "actuator": "light",
+                    "mode": "pulse",
+                    "color": "green"
+                }
+            ],
+            "time_limit": 90,
+            "death_text": "The clock groans, and a cold gust extinguishes the dim light in the room. You're forever trapped in its timeless prison."
+        },
+        {
+            "path_name": "The Scholar's Secret",
+            "description": "A dusty lectern holds a single, unbound volume. Next to it, a small pedestal seems to react to presence, and a picture dial with various arcane symbols. An old parchment on the wall reads: 'Consult the ancients, then listen closely.'",
+            "hint": "To unlock wisdom's gaze, seek the tome of forbidden lore. // Then, draw near to absorb its silent wisdom.",
+            "solution_sequence": [
+                {
+                    "sensor": "rotary_encoder_picture",
+                    "value": "book"
+                },
+                {
+                    "sensor": "distance_sensor",
+                    "value": "hovered"
+                }
+            ],
+            "audio_cue": "pages_turning.mp3",
+            "effects": [
+                {
+                    "actuator": "vibration",
+                    "mode": "rattle",
+                    "duration": 4
+                },
+                {
+                    "actuator": "light",
+                    "mode": "fade",
+                    "color": "white"
+                }
+            ],
+            "time_limit": 90,
+            "death_text": "The book slams shut with an audible thud. Invisible hands drag you into the endless shelves, condemning you to become another forgotten story."
+        },
+        {
+            "path_name": "The Spirit's Offering",
+            "description": "A small, round table is set with various implements: an empty holder, a glowing button panel, and a strange device that seems to detect movement. An unseen voice whispers: 'Awaken them, light their way, and show them the path.'",
+            "hint": "Rouse the slumbering spirits with a tremor. // Illuminate their ethereal path with the glow of a timid flame. // And offer the guiding light for their journey.",
+            "solution_sequence": [
+                {
+                    "sensor": "gyro",
+                    "value": "shaking"
+                },
+                {
+                    "sensor": "button",
+                    "value": "yellow"
+                },
+                {
+                    "sensor": "rotary_encoder_picture",
+                    "value": "candle"
+                }
+            ],
+            "audio_cue": "ghostly_moan.mp3",
+            "effects": [
+                {
+                    "actuator": "vibration",
+                    "mode": "vibrate",
+                    "duration": 5
+                },
+                {
+                    "actuator": "light",
+                    "mode": "blink",
+                    "color": "yellow"
+                }
+            ],
+            "time_limit": 90,
+            "death_text": "The air grows heavy, and icy hands grab at you. The spirits are angered, claiming you as their own to wander Blackwood Manor forever."
+        }
+    ]
+}

@@ -15,8 +15,7 @@
         "red",
         "blue",
         "green",
-        "yellow",
-        "black"
+        "yellow"
     ],
     "rotaryEncoderNumberValues": [
         "1",
@@ -28,7 +27,7 @@
         "7",
         "8",
         "9",
-        "10"
+        "0"
     ],
     "rotaryEncoderPictureValues": [
         "dynamite",
@@ -83,7 +82,7 @@
                 },
                 {
                     "sensor": "button",
-                    "value": "black"
+                    "value": "blue"
                 }
             ],
             "audio_cue": "deep_sea_rumble.mp3",
@@ -100,7 +99,6 @@
                 }
             ],
             "time_limit": 90,
-            "retry_limit": 3,
             "death_text": "The chest shudders violently, sealing itself against your clumsy attempts. The air grows cold as an unseen force pulls you into the murky depths."
         },
         {
@@ -131,7 +129,6 @@
                 }
             ],
             "time_limit": 90,
-            "retry_limit": 3,
             "death_text": "The pendulum swings wildly, striking the carousel. A deafening shriek echoes, and you feel your mind unraveling, lost forever in the siren's illusion."
         },
         {
@@ -141,7 +138,7 @@
             "solution_sequence": [
                 {
                     "sensor": "rotary_encoder_number",
-                    "value": "10"
+                    "value": "9"
                 },
                 {
                     "sensor": "distance_sensor",
@@ -162,7 +159,6 @@
                 }
             ],
             "time_limit": 90,
-            "retry_limit": 3,
             "death_text": "The orb blazes with an agonizing light, searing your vision. The chest remains impenetrable, its secrets guarded by the eternal darkness of the deep."
         }
     ]

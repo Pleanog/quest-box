@@ -4,7 +4,7 @@
   "themes": ["wild west"],
   "inputs": ["button", "rotary_encoder_number", "rotary_encoder_picture", "gyro", "distance_sensor"],
   "buttonValues": ["red", "blue", "green", "yellow"],
-  "rotaryEncoderNumberValues": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+  "rotaryEncoderNumberValues": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"],
   "rotaryEncoderPictureValues": ["dynamite", "knife", "candle", "rope", "key", "book", "dice", "potion", "stick", "compass"],
   "gyroValues": ["shaking"],
   "distanceSensorValues": ["hovered", "covered"],
@@ -41,7 +41,6 @@
         }
     ],
       "time_limit": 90,
-      "retry_limit": 3,
       "death_text": "You input the wrong combination. A loud click echoes, followed by silence. The safe is now permanently jammed. The treasure is lost forever."
     },
     {
@@ -72,7 +71,6 @@
         }
     ],
       "time_limit": 90,
-      "retry_limit": 3,
       "death_text": "You handled it too delicately! The mixture erupts, splashing a potent acid that dissolves the lock and the map within. Your chance is gone."
     },
     {
@@ -103,7 +101,6 @@
         }
     ],
       "time_limit": 90,
-      "retry_limit": 3,
       "death_text": "Wrong move! A hidden dart shoots out from the snake's mouth, hitting you in the arm. The world fades to black as the poison takes hold."
     }
   ]
