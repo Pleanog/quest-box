@@ -1,0 +1,165 @@
+{
+    "title": "The Curse of the Sunken Chest",
+    "starting_description": "You are a notorious buccaneer, stranded on a forgotten isle. Legend speaks of Captain Blackheart's cursed treasure, locked within a barnacle-encrusted chest. Three peculiar mechanisms bar your way to riches untold... or doom.",
+    "themes": [
+        "pirates"
+    ],
+    "inputs": [
+        "button",
+        "rotary_encoder_number",
+        "rotary_encoder_picture",
+        "gyro",
+        "distance_sensor"
+    ],
+    "buttonValues": [
+        "red",
+        "blue",
+        "green",
+        "yellow"
+    ],
+    "rotaryEncoderNumberValues": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "0"
+    ],
+    "rotaryEncoderPictureValues": [
+        "dynamite",
+        "knife",
+        "candle",
+        "rope",
+        "key",
+        "book",
+        "dice",
+        "potion",
+        "stick",
+        "compass"
+    ],
+    "gyroValues": [
+        "shaking"
+    ],
+    "distanceSensorValues": [
+        "hovered",
+        "covered"
+    ],
+    "actuators": [
+        "light",
+        "vibration"
+    ],
+    "lightModes": [
+        "static",
+        "blink",
+        "pulse",
+        "fade"
+    ],
+    "vibrationModes": [
+        "vibrate",
+        "rattle"
+    ],
+    "effectsColors": [
+        "red",
+        "green",
+        "blue",
+        "yellow",
+        "white",
+        "purple"
+    ],
+    "paths": [
+        {
+            "path_name": "The Navigator's Dial",
+            "description": "A brass dial with ancient symbols, reminiscent of a ship's compass, is the first impediment. A weathered inscription warns: 'Navigate the stars to the Pirate's Code, then mark the colour of the distant isle.'",
+            "hint": "How many articles were in the most infamous Pirate's Code? // What color often signifies lush land on a mariner's chart?",
+            "solution_sequence": [
+                {
+                    "sensor": "rotary_encoder_number",
+                    "value": "9"
+                },
+                {
+                    "sensor": "button",
+                    "value": "green"
+                }
+            ],
+            "audio_cue": "compass_spin.mp3",
+            "effects": [
+                {
+                    "actuator": "vibration",
+                    "mode": "vibrate",
+                    "duration": 4
+                },
+                {
+                    "actuator": "light",
+                    "mode": "pulse",
+                    "color": "blue"
+                }
+            ],
+            "time_limit": 90,
+            "death_text": "A treacherous squall of static electricity engulfs the dial, freezing it forever. The compass needle points to an endless, watery grave. The treasure is lost."
+        },
+        {
+            "path_name": "The Kraken's Gaze",
+            "description": "The second lock is a dark, glassy orb, pulsating faintly. It feels alive, sensitive to touch and shadow. A chilling whisper seems to emanate from it: 'Blind the beast, then give it a fright!'",
+            "hint": "To conceal its sight, cast a shadow upon its eye. // A sudden tremor will break its eerie calm.",
+            "solution_sequence": [
+                {
+                    "sensor": "distance_sensor",
+                    "value": "covered"
+                },
+                {
+                    "sensor": "gyro",
+                    "value": "shaking"
+                }
+            ],
+            "audio_cue": "deep_sea_rumble.mp3",
+            "effects": [
+                {
+                    "actuator": "vibration",
+                    "mode": "rattle",
+                    "duration": 6
+                },
+                {
+                    "actuator": "light",
+                    "mode": "fade",
+                    "color": "purple"
+                }
+            ],
+            "time_limit": 90,
+            "death_text": "The orb shatters, releasing a black, inky cloud that envelops the chest, cursing it to the abyssal depths. The treasure is lost to the darkness."
+        },
+        {
+            "path_name": "The Buccaneer's Bounty",
+            "description": "The final contraption is a small, wooden panel with an item slot and a series of colored buttons. A crude drawing of a treasure chest is etched near a yellow button. An old sea shanty's verse is carved below: 'What brings forth fortune from the depths, then signals greed's desire?'",
+            "hint": "To unlock buried wealth, what ancient tool must you present? // What gleaming hue represents the ultimate pirate's prize?",
+            "solution_sequence": [
+                {
+                    "sensor": "rotary_encoder_picture",
+                    "value": "key"
+                },
+                {
+                    "sensor": "button",
+                    "value": "yellow"
+                }
+            ],
+            "audio_cue": "coin_jingle.mp3",
+            "effects": [
+                {
+                    "actuator": "vibration",
+                    "mode": "vibrate",
+                    "duration": 3
+                },
+                {
+                    "actuator": "light",
+                    "mode": "static",
+                    "color": "yellow"
+                }
+            ],
+            "time_limit": 90,
+            "death_text": "A hidden mechanism snaps, sending a torrent of salt water into the chest, ruining all within. The treasure is lost to the sea's unforgiving embrace."
+        }
+    ]
+}

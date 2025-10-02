@@ -13,7 +13,7 @@ from gyro_controller import Gyro
 from rotary_encoder_controller import RotaryEncoderController 
 from distance_controller import DistanceController
 
-IMAGE_OPTIONS = ["dynamite", "knife", "candle", "rope", "key", "book", "dice", "potion", "stick", "compass"] # 10 images
+IMAGE_OPTIONS = ["dynamite", "knife", "candle", "key", "rope", "book", "dice", "potion", "stick", "compass"] # 10 images
 NUMBER_OPTIONS = [str(i) for i in range(0, 10)] # 10 numbers
 
 class InputManager:
@@ -150,17 +150,16 @@ if __name__ == "__main__":
     bus_lock = Lock()
 
     device_configs = [
-        
-        {"type": "sx1509_button", "value": "repeat", "pin": 11},
-        {"type": "sx1509_button", "value": "hint", "pin": 3},
-        {"type": "sx1509_button", "value": "yellow", "pin": 4},
         {"type": "sx1509_button", "value": "red", "pin": 1},
-        {"type": "sx1509_button", "value": "green", "pin": 14},
-        {"type": "sx1509_button", "value": "blue", "pin": 13},
-        {"type": "gyro", "value": "shaking"},
-        {"type": "rotary_encoder", "name": "rotary_encoder_picture", "clk_pin": 20, "dt_pin": 21, "button_pin": 16},
-        {"type": "rotary_encoder", "name": "rotary_encoder_number", "clk_pin": 13, "dt_pin": 19, "button_pin": 26},
-        {"type": "distance_sensor", "trigger_pin": 23, "echo_pin": 24},
+        {"type": "sx1509_button", "value": "yellow", "pin": 2},
+        {"type": "sx1509_button", "value": "blue", "pin": 3},
+        {"type": "sx1509_button", "value": "green", "pin": 4},
+        {"type": "sx1509_button", "value": "hint", "pin": 13},
+        {"type": "sx1509_button", "value": "repeat", "pin": 14},
+        # {"type": "gyro", "value": "shaking"},
+        # {"type": "rotary_encoder", "name": "rotary_encoder_picture", "clk_pin": 20, "dt_pin": 21, "button_pin": 16},
+        # {"type": "rotary_encoder", "name": "rotary_encoder_number", "clk_pin": 13, "dt_pin": 19, "button_pin": 26},
+        # {"type": "distance_sensor", "trigger_pin": 23, "echo_pin": 24},
     ]
 
     im = InputManager(q, bus_lock, device_configs)

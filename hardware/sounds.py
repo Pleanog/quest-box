@@ -19,7 +19,10 @@ def play_sound(filename: str, loop: bool = False):
 
     print(f"Playing sound from path: {file_path}")
 
-    file_path = "/home/philipp/quest-box/games/the-curse-of-the-krakens-chest/audio/description_the_siren's_song.mp3"
+    #file_path = "/home/philipp/quest-box/games/the-curse-of-the-krakens-chest/audio/description_the_siren's_song.mp3"
+    # file_path = "/home/philipp/quest-box/sfx/ding.mp3"
+    # file_path = "/home/philipp/quest-box/sfx/wronganswer.mp3"
+    file_path = "/home/philipp/quest-box/sfx/rightanswer.mp3"
 
     if not os.path.isfile(file_path):
         raise FileNotFoundError(f"Sound file not found: {file_path}")
@@ -32,14 +35,17 @@ def play_sound(filename: str, loop: bool = False):
 # from sounds import play_sound
 
 def main():
-    print("Starting sound test...")
-    # Play the dessert sound once at the start
-    play_sound("dessert-1.mp3", loop=False)
-    # play_mp3("dessert-1.mp3", loop=False)
-    while pygame.mixer.music.get_busy():
-        time.sleep(1)
-    # Your existing code...
-    print("Game started!")
+    try:
+        print("Starting sound test...")
+        # Play the dessert sound once at the start
+        play_sound("dessert-1.mp3", loop=False)
+        # play_mp3("dessert-1.mp3", loop=False)
+        while pygame.mixer.music.get_busy():
+            time.sleep(1)
+        # Your existing code...
+        print("Game started!")
+    finally:
+        pygame.quit() 
 
 if __name__ == "__main__":
     main()

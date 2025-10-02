@@ -2,6 +2,7 @@
 
 import os
 import json
+import time
 from colorama import Fore, Style
 from elevenlabsAPI.tts_service import TTSService
 from filename_service import FileNameService
@@ -97,3 +98,6 @@ class GameAudioGenerator:
         )
         if not saved_path:
             print(f"{Fore.RED}Failed to generate audio for: {file_name}{Style.RESET_ALL}")
+
+        # print(f"{Style.DIM}Pausing for 2 seconds before next request...{Style.RESET_ALL}")
+        # time.sleep(2)

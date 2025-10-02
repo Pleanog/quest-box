@@ -13,7 +13,7 @@ from colorama import Fore, Style
 # GPIO-Pin für LEDs
 LED_PIN = D18
 NUM_PIXELS = 32
-BRIGHTNESS = 1
+BRIGHTNESS = 0.5
 
 # Farben definieren
 COLORS = {

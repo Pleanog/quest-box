@@ -1,0 +1,173 @@
+{
+    "title": "The Phantom's Lullaby",
+    "starting_description": "You find yourself trapped in the decrepit Blackwood Manor, renowned for its spectral inhabitants. The air is thick with dread, and eerie whispers guide you to a peculiar, dust-laden chest. Legend says it holds the key to calming the house's restless spirit, but it's secured by three arcane locks, each demanding a different tribute.",
+    "themes": [
+        "haunted house"
+    ],
+    "inputs": [
+        "button",
+        "rotary_encoder_number",
+        "rotary_encoder_picture",
+        "gyro",
+        "distance_sensor"
+    ],
+    "buttonValues": [
+        "red",
+        "blue",
+        "green",
+        "yellow"
+    ],
+    "rotaryEncoderNumberValues": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "0"
+    ],
+    "rotaryEncoderPictureValues": [
+        "dynamite",
+        "knife",
+        "candle",
+        "rope",
+        "key",
+        "book",
+        "dice",
+        "potion",
+        "stick",
+        "compass"
+    ],
+    "gyroValues": [
+        "shaking"
+    ],
+    "distanceSensorValues": [
+        "hovered",
+        "covered"
+    ],
+    "actuators": [
+        "light",
+        "vibration"
+    ],
+    "lightModes": [
+        "static",
+        "blink",
+        "pulse",
+        "fade"
+    ],
+    "vibrationModes": [
+        "vibrate",
+        "rattle"
+    ],
+    "effectsColors": [
+        "red",
+        "green",
+        "blue",
+        "yellow",
+        "white",
+        "purple"
+    ],
+    "paths": [
+        {
+            "path_name": "The Whispering Gallery",
+            "description": "The first lock is a shadowy recess, constantly emitting a low, mournful hum. A faint inscription reads: 'Hear the wail, then paint the night.'",
+            "hint": "Listen close to the spectral hum. // Then soothe the spirit's sorrow with the color of deep twilight.",
+            "solution_sequence": [
+                {
+                    "sensor": "distance_sensor",
+                    "value": "hovered"
+                },
+                {
+                    "sensor": "button",
+                    "value": "blue"
+                }
+            ],
+            "audio_cue": "ghostly_whispers.mp3",
+            "effects": [
+                {
+                    "actuator": "vibration",
+                    "mode": "vibrate",
+                    "duration": 4
+                },
+                {
+                    "actuator": "light",
+                    "mode": "pulse",
+                    "color": "blue"
+                }
+            ],
+            "time_limit": 90,
+            "death_text": "The wail intensifies, and a chilling gust extinguishes your resolve. The spectral energy overpowers you, trapping your spirit within the manor forever."
+        },
+        {
+            "path_name": "The Alchemist's Brew",
+            "description": "A strange, bubbling retort forms the second lock. It has a dial for mystical ingredients and a counter. 'Brew the ancient sleep, with triple the sorrow, and wake its power.'",
+            "hint": "Concoct the potent elixir // with three drops of nightshade // then stir the spirits within.",
+            "solution_sequence": [
+                {
+                    "sensor": "rotary_encoder_picture",
+                    "value": "potion"
+                },
+                {
+                    "sensor": "rotary_encoder_number",
+                    "value": "3"
+                },
+                {
+                    "sensor": "gyro",
+                    "value": "shaking"
+                }
+            ],
+            "audio_cue": "bubbling_potion.mp3",
+            "effects": [
+                {
+                    "actuator": "vibration",
+                    "mode": "rattle",
+                    "duration": 6
+                },
+                {
+                    "actuator": "light",
+                    "mode": "fade",
+                    "color": "purple"
+                }
+            ],
+            "time_limit": 90,
+            "death_text": "The brew overflows, releasing noxious fumes that engulf you. Your senses dull, and you fall into an eternal slumber, becoming another spectral resident of Blackwood Manor."
+        },
+        {
+            "path_name": "The Gravekeeper's Dilemma",
+            "description": "The final lock is a decaying tombstone, etched with numbers and symbols. A flickering light hints at its purpose. 'Measure the abyss, light the way, and mark the end.'",
+            "hint": "Nine feet deep, the secrets sleep. // Illuminate the forgotten tomb. // Then seal the pact with a crimson flame.",
+            "solution_sequence": [
+                {
+                    "sensor": "rotary_encoder_number",
+                    "value": "9"
+                },
+                {
+                    "sensor": "rotary_encoder_picture",
+                    "value": "candle"
+                },
+                {
+                    "sensor": "button",
+                    "value": "red"
+                }
+            ],
+            "audio_cue": "creaking_coffin.mp3",
+            "effects": [
+                {
+                    "actuator": "vibration",
+                    "mode": "vibrate",
+                    "duration": 7
+                },
+                {
+                    "actuator": "light",
+                    "mode": "static",
+                    "color": "yellow"
+                }
+            ],
+            "time_limit": 90,
+            "death_text": "A cold, skeletal hand grips you from the tombstone. You are dragged into the darkness, becoming one with the earth and the spirits below."
+        }
+    ]
+}

@@ -84,20 +84,29 @@ class RotaryEncoderController:
 #  Test for main
 if __name__ == "__main__":
     
-    IMAGE_OPTIONS = ["dynamite", "knife", "candle", "rope", "key", "book", "dice", "potion", "stick", "compass"] # 10 images
-    NUMBER_OPTIONS = [str(i) for i in range(1, 11)] # 10 numbers
+    IMAGE_OPTIONS = ["dynamite", "knife", "candle", "key", "rope", "book", "dice", "potion", "stick", "compass"] # 10 images
+    NUMBER_OPTIONS = [str(i) for i in range(0, 10)] # 10 numbers
     
     event_queue = queue.Queue()
 
     encoder = RotaryEncoderController(
         name="rotary_encoder",
         event_queue=event_queue,
-        clk_pin=20,
-        dt_pin=21,
-        button_pin=16,
+        clk_pin=13,
+        dt_pin=19,
+        button_pin=26,
         options=NUMBER_OPTIONS,
         steps_per_option=4 # Adjust this value to change sensitivity
     )
+    # encoder = RotaryEncoderController(
+    #     name="rotary_encoder",
+    #     event_queue=event_queue,
+    #     clk_pin=20,
+    #     dt_pin=21,
+    #     button_pin=16,
+    #     options=NUMBER_OPTIONS,
+    #     steps_per_option=4 # Adjust this value to change sensitivity
+    # )
 
     try:
         encoder.start()

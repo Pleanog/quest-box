@@ -1,0 +1,169 @@
+{
+    "title": "The Cursed Chest of Captain Blackheart",
+    "starting_description": "The salty air bites at your face as you stand on a remote, forgotten isle. Before you, half-buried in the sand, lies the legendary chest of Captain Blackheart, rumored to hold unimaginable riches and dark secrets. Three intricate locks seal its fate, each demanding a different challenge to yield its bounty.",
+    "themes": [
+        "pirates"
+    ],
+    "inputs": [
+        "button",
+        "rotary_encoder_number",
+        "rotary_encoder_picture",
+        "gyro",
+        "distance_sensor"
+    ],
+    "buttonValues": [
+        "red",
+        "blue",
+        "green",
+        "yellow"
+    ],
+    "rotaryEncoderNumberValues": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "0"
+    ],
+    "rotaryEncoderPictureValues": [
+        "dynamite",
+        "knife",
+        "candle",
+        "rope",
+        "key",
+        "book",
+        "dice",
+        "potion",
+        "stick",
+        "compass"
+    ],
+    "gyroValues": [
+        "shaking"
+    ],
+    "distanceSensorValues": [
+        "hovered",
+        "covered"
+    ],
+    "actuators": [
+        "light",
+        "vibration"
+    ],
+    "lightModes": [
+        "static",
+        "blink",
+        "pulse",
+        "fade"
+    ],
+    "vibrationModes": [
+        "vibrate",
+        "rattle"
+    ],
+    "effectsColors": [
+        "red",
+        "green",
+        "blue",
+        "yellow",
+        "white",
+        "purple"
+    ],
+    "paths": [
+        {
+            "path_name": "The Mariner's Compass",
+            "description": "The first lock is an ancient brass compass embedded into the chest. It has a dial with various pictures and a single red button. A weathered inscription around it reads: 'To truly navigate the seas, you must first find your bearing, then trust in the heart of the journey.'",
+            "hint": "Which tool guides your way across the endless blue? // What color beats in a brave pirate's heart?",
+            "solution_sequence": [
+                {
+                    "sensor": "rotary_encoder_picture",
+                    "value": "compass"
+                },
+                {
+                    "sensor": "button",
+                    "value": "red"
+                }
+            ],
+            "audio_cue": "sea_shanty_snippet.mp3",
+            "effects": [
+                {
+                    "actuator": "vibration",
+                    "mode": "vibrate",
+                    "duration": 4
+                },
+                {
+                    "actuator": "light",
+                    "mode": "pulse",
+                    "color": "blue"
+                }
+            ],
+            "time_limit": 60,
+            "death_text": "The compass spins wildly, then snaps, sending splinters of brass flying. A ghostly whisper warns, 'Lost at sea, forever bound!' The lock is sealed by an unseen force."
+        },
+        {
+            "path_name": "The Kraken's Coil",
+            "description": "A strange, flexible coil wraps around the second lock, almost like a massive tentacle. It pulses faintly. There's a small sensor on one end and a dial with numbers on the other. A chilling rhyme is etched into the wood: 'Count the legs of the beast, then give it no light.'",
+            "hint": "How many powerful arms does the legendary Kraken possess? // How do you plunge a room into darkness?",
+            "solution_sequence": [
+                {
+                    "sensor": "rotary_encoder_number",
+                    "value": "8"
+                },
+                {
+                    "sensor": "distance_sensor",
+                    "value": "covered"
+                }
+            ],
+            "audio_cue": "kraken_roar.mp3",
+            "effects": [
+                {
+                    "actuator": "vibration",
+                    "mode": "rattle",
+                    "duration": 7
+                },
+                {
+                    "actuator": "light",
+                    "mode": "fade",
+                    "color": "green"
+                }
+            ],
+            "time_limit": 75,
+            "death_text": "The coil tightens, crushing the lock with immense force. A deep, guttural growl echoes from the depths. The chest begins to sink into the sand, lost to the hungry sea."
+        },
+        {
+            "path_name": "The Powder Keg's Secret",
+            "description": "The final lock resembles a small, rusted powder keg with a yellow button and a picture dial. A cryptic message is carved: 'The spark of fury must first ignite, then the earth shall tremble with all its might. Once the tremor subsides, press the color of gold to claim your right.'",
+            "hint": "What explosive device starts a mighty blast? // How does the ground react to such a powerful force? // What hue shines brightest from a pirate's treasure?",
+            "solution_sequence": [
+                {
+                    "sensor": "rotary_encoder_picture",
+                    "value": "dynamite"
+                },
+                {
+                    "sensor": "gyro",
+                    "value": "shaking"
+                },
+                {
+                    "sensor": "button",
+                    "value": "yellow"
+                }
+            ],
+            "audio_cue": "explosion_rumble.mp3",
+            "effects": [
+                {
+                    "actuator": "vibration",
+                    "mode": "rattle",
+                    "duration": 8
+                },
+                {
+                    "actuator": "light",
+                    "mode": "blink",
+                    "color": "yellow"
+                }
+            ],
+            "time_limit": 90,
+            "death_text": "A faulty charge detonates prematurely! The keg explodes, blasting the chest to splinters and scattering the treasure to the winds. You are caught in the blast."
+        }
+    ]
+}

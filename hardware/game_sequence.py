@@ -3,6 +3,7 @@ import time
 import threading
 import queue
 import copy
+import os
 import pygame
 from pathlib import Path
 from input_manager import InputEvent
@@ -161,12 +162,45 @@ class GameSequence:
     ###############################################################################
     # AUDIO PLAYBACK METHODS - DIRECTLY USING PYGAME (NO OUTPUT MANAGER)
     ###############################################################################
+    def _play_sfx(self, sound_object):
+        """Plays a pre-loaded sound effect object."""
+        if sound_object:
+            sound_object.play()
+
+    def _play_sound_test(filename: str, loop: bool = False):
+        """
+        Plays a sound file from the 'audio' folder at the same level as the 'hardware' directory.
+        
+        Args:
+            filename (str): Name of the mp3 file.
+            loop (bool): If True, loops until stopped.
+        """
+        # pygame.mixer.init(frequency=44100)  # standard audio frequency
+        file_path = os.path.join(os.path.dirname(__file__), "..", "audio", filename)
+        file_path = os.path.abspath(file_path)
+
+        print(f"Playing sound from path: {file_path}")
+
+        file_path = "/home/philipp/quest-box/games/the-curse-of-the-krakens-chest/audio/description_the_siren's_song.mp3"
+
+        if not os.path.isfile(file_path):
+            raise FileNotFoundError(f"Sound file not found: {file_path}")
+        
+        # pygame.mixer.init(frequency=44100, devicename="plughw:8,0")
+        pygame.mixer.music.load(file_path)
+        pygame.mixer.music.play(-1 if loop else 0)
+
 
     def _play_audio_and_wait(self, text: str, audio_type: str, path_identifier: str):
         """
         Directly finds and plays an audio file, blocking until it's finished.
         """
         print(text)
+        # print('🖐️🖐️playing sound hopefully from test function (and waiting 5 seconds)')
+        # self._play_sound_test("dessert-1.mp3", loop=False)
+        # time.sleep(5)
+        # print('🖐️🖐️wait over, should have played sound')
+
         try:
             # 1. Build the file path directly
             file_name = self.file_service.get_audio_filename(audio_type, path_identifier)
@@ -288,6 +322,21 @@ class GameSequence:
         print(f"{Fore.MAGENTA}=== {title} ==={Fore.RESET}")
         self._play_audio_and_wait(starting_description, "starting_description", self.game_name)
 
+        # --- NEW: Pre-load the sound effect for better performance ---
+        try:
+            # Assumes your 'sfx' folder is at the root of the 'quest-box' project
+            sfx_path_correct = os.path.join(os.path.dirname(__file__), "..", "sfx", "rightanswer.mp3")
+            sfx_path_wrong = os.path.join(os.path.dirname(__file__), "..", "sfx", "wronganswer.mp3")
+            sfx_path_victory = os.path.join(os.path.dirname(__file__), "..", "sfx", "victory.mp3")
+            self.correct_sfx = pygame.mixer.Sound(sfx_path_correct)
+            self.wrong_sfx = pygame.mixer.Sound(sfx_path_wrong)
+            self.victory_sfx = pygame.mixer.Sound(sfx_path_victory)
+            print(f"{Style.DIM}Sound effects loaded.{Style.RESET_ALL}")
+        except pygame.error as e:
+            print(f"{Fore.RED}Could not load sound effect: {e}{Style.RESET_ALL}")
+            self.correct_sfx = None
+        # --- END NEW ---
+
         for path in paths:
             path_succeeded = self._run_single_path(path)
             if not path_succeeded:
@@ -295,6 +344,7 @@ class GameSequence:
                 return False # End the game
 
         print(f"{Fore.GREEN}\n🎉 Congratulations! All paths completed!{Style.RESET_ALL}")
+        self._play_sfx(self.victory_sfx)
         return True
 
     def _run_single_path(self, path_config):
@@ -318,12 +368,12 @@ class GameSequence:
         print(f"\n{Fore.MAGENTA}--- Starting Path: {path_name} ---{Fore.RESET}")
         
         # Play initial effects
-        for effect in effects:
-            try:
-                actuator_type, params = _normalize_and_validate_step(effect)
-                self.output_manager.command_queue.put((actuator_type, params))
-            except Exception as e:
-                print(f"✖ Invalid initial effect: {e}")
+        # for effect in effects:
+        #     try:
+        #         actuator_type, params = _normalize_and_validate_step(effect)
+        #         self.output_manager.command_queue.put((actuator_type, params))
+        #     except Exception as e:
+        #         print(f"✖ Invalid initial effect: {e}")
         
         # Play the path description and start the timer
         self._play_audio_and_wait(description, "description", path_name)
@@ -337,7 +387,7 @@ class GameSequence:
         while current_step_index < len(solution_sequence):
             # Check for timeout first on every loop iteration
             if self.stop_timer_flag.is_set():
-                self._play_audio_non_blocking(death_text, "death_text", path_name)
+                self._play_audio_and_wait(death_text, "death_text", path_name)
                 self._route_error(death_text)
                 return False
 
@@ -357,11 +407,13 @@ class GameSequence:
                 # --- PROCESS PUZZLE INPUT ---
                 expected_step = solution_sequence[current_step_index]
                 if self._check_event(event, expected_step):
+                    self._play_sfx(self.correct_sfx)
                     current_step_index += 1
                     print(f"{Fore.GREEN}✅ Step {current_step_index} correct!{Style.RESET_ALL}")
                 else:
                     # Incorrect input, do nothing and wait for the correct one
                     print(f"{Fore.YELLOW}✖ Incorrect input. Try again.{Style.RESET_ALL}")
+                    self._play_sfx(self.wrong_sfx)
             
             except queue.Empty:
                 # This is normal, it just means no input was received. Loop again.
@@ -495,6 +547,7 @@ if __name__ == "__main__":
             config_path=config_path,
             input_queue=input_q,
             output_manager=output_manager,
+            
             game_name=TEST_GAME_NAME
         )
         

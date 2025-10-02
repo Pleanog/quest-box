@@ -29,7 +29,7 @@ from game_sequence import GameSequence
 from input_manager import InputManager
 from output_manager import OutputManager
 from led_controller import LEDController
-from sound_controller import SoundController 
+# from sound_controller import SoundController 
 from vibration_motor_controller import VibrationController
 from bus_manager import I2C_BUS_LOCK
 
@@ -41,6 +41,10 @@ BASE_DIR = Path(__file__).parent.parent
 
 def main():
     try:
+        # Force ALSA driver to prevent defaulting to HDMI or failing without a monitor
+        os.environ['SDL_AUDIODRIVER'] = 'alsa' 
+        # Pre-initialize the mixer with standard settings
+        pygame.mixer.pre_init(44100, -16, 2, 512)
         pygame.init()  # Initialize Pygame
 
         # --- 1. INITIALIZE THREAD MANAGERS (needed for menu input/output) ---
@@ -57,23 +61,23 @@ def main():
         led_controller = LEDController()
         vibration_controller = VibrationController()
         file_service = FileNameService(str(BASE_DIR)) # <-- Needs to be defined before SoundController
-        sound_controller = SoundController(file_service) # TTS for game audio
+        # sound_controller = SoundController(file_service) # TTS for game audio
 
         # Add controllers to the OutputManager
         output_manager_instance = OutputManager(output_command_queue)
-        output_manager_instance.add_controller("light", led_controller)
-        output_manager_instance.add_controller("vibration", vibration_controller)
+        # output_manager_instance.add_controller("light", led_controller)
+        # output_manager_instance.add_controller("vibration", vibration_controller)
         output_manager_instance.add_controller("tts_service", audio_service)
-        output_manager_instance.add_controller("sound", sound_controller)
+        # output_manager_instance.add_controller("sound", sound_controller)
 
         # Define device configurations (Hint and Repeat are crucial here)
         device_configs = [
-            {"type": "sx1509_button", "value": "repeat", "pin": 11}, # MENU SWITCH GAME/REPEAT
-            {"type": "sx1509_button", "value": "hint", "pin": 3}, # MENU START GAME/HINT
-            {"type": "sx1509_button", "value": "yellow", "pin": 4},
             {"type": "sx1509_button", "value": "red", "pin": 1},
-            {"type": "sx1509_button", "value": "green", "pin": 14},
-            {"type": "sx1509_button", "value": "blue", "pin": 13},
+            {"type": "sx1509_button", "value": "yellow", "pin": 2},
+            {"type": "sx1509_button", "value": "blue", "pin": 3},
+            {"type": "sx1509_button", "value": "green", "pin": 4},
+            {"type": "sx1509_button", "value": "hint", "pin": 13}, # MENU START GAME/HINT
+            {"type": "sx1509_button", "value": "repeat", "pin": 14},# MENU SWITCH GAME/REPEAT
             {"type": "gyro", "value": "shaking"},
             {"type": "rotary_encoder", "name": "rotary_encoder_picture", "clk_pin": 20, "dt_pin": 21, "button_pin": 16},
             {"type": "rotary_encoder", "name": "rotary_encoder_number", "clk_pin": 13, "dt_pin": 19, "button_pin": 26},
@@ -156,3 +160,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
