@@ -17,6 +17,8 @@ The project is built on a modular, multi-threaded architecture to ensure real-ti
 * **`InputManager`**: This module manages all physical input devices, such as custom buttons, rotary encoders, and sensors. It continuously polls these devices and translates their state changes into standardized `InputEvent` objects, which are then placed into a shared queue.
 * **`OutputManager`**: The counterpart to the input manager, this module handles all physical outputs like LEDs and vibration motors. It receives commands from the game logic via a queue and dispatches them to the appropriate hardware controllers.
 * **`GameSequence`**: This is the heart of the game logic. It reads a solution sequence from a JSON configuration file and waits for a series of correct `InputEvent`s. It tracks the player's progress and manages the game's state, including retries and victory/failure conditions.
+* **`GeminiClient`**: This controls the prompt sent to Gemini. It includes a template and a full example that are both sent along with the prompt to ensure a clean JSON with its appropriate variables is returned.
+* **`ElevenLabsManager`**: This uses the ElevenLabs API to generate text to speech and text to sound effects. Currently only the text to speech funtion is being used.
 * **Hardware Controllers**: Individual classes (e.g., `LEDController`, `RotaryEncoderController`, `DistanceController`) encapsulate the low-level logic for each specific piece of hardware. This design makes it easy to add or swap out components.
 
 ## ⚡️ Hardware and Software Requirements
@@ -35,7 +37,9 @@ The project is built on a modular, multi-threaded architecture to ensure real-ti
     * `RPi.GPIO` library
     * `smbus` library (for I2C communication)
     * `colorama` (for colored console output)
-    * `json`
+    * `json` 
+    * `google.generativeai` Gemini API
+    * `elevenlabs.client` ElevenLabs API
 
 ## 🔌 Connecting to the Quest-Box
 
@@ -68,6 +72,9 @@ username: swh
 password: swh123
 hostname: raspberrypi.local
 access it via: ssh swh@swh1234@raspberrypi.local
+
+username: philipp
+password: philipp
 
 ssh philipp
 catchphrase: hardware
