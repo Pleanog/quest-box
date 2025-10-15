@@ -1,11 +1,13 @@
-# quest-box
-AI powered dungeon adventures on a physical hardware box, with many interactive elements
-
----
-
 # Quest-Box: An Interactive Dungeon Adventures in a Box
 
+
+![Quest-Box-Logo](quest-box-logo.png)
+
 ## 📖 Project Overview
+
+AI powered dungeon adventures on a physical hardware box, with many interactive elements
+
+![Quest-Box](questbox-free.png)
 
 Quest-Box is a prototype of an interactive puzzle box that combines physical hardware with a dynamic, AI-powered narrative. Developed as a university project, this system demonstrates the integration of a Raspberry Pi with various sensors and actuators to create an immersive, story-driven game. The core of the project lies in its ability to translate physical input from the user into meaningful events that progress a branching narrative, while providing rich feedback through lights, sound, and vibration.
 
@@ -25,6 +27,8 @@ The project is built on a modular, multi-threaded architecture to ensure real-ti
 
 * **Hardware**:
     * Raspberry Pi 4B
+    * 32 GB SD-Card
+    * PSU for the Pie
     * SX1509 I/O Expander
     * TCA9548A I2C Multiplexer (optional but recommended for multiple I2C devices)
     * GY-521 MPU6050 Gyroscope/Accelerometer
@@ -41,15 +45,15 @@ The project is built on a modular, multi-threaded architecture to ensure real-ti
     * `google.generativeai` Gemini API
     * `elevenlabs.client` ElevenLabs API
 
-## 🔌 Connecting to the Quest-Box
+## 🔌 Connecting to the Quest-Box and starting the Game
 
 To connect to the Raspberry Pi for development, **Tailscale** is used for secure remote access, and **SSH** is used to access the terminal and VS Code's Remote-SSH feature.
 
 1.  **Install Tailscale**: On your local machine and the Raspberry Pi, install and set up Tailscale. This creates a secure, private network between your devices.
 2.  **Find the IP**: Get the Tailscale IP address of the Raspberry Pi. This can be found in the Tailscale admin panel or by running `tailscale ip -4` on the Pi's terminal.
 3.  **Connect with SSH**:
-    * **VS Code**: In VS Code, open the Remote Explorer, select "SSH Targets," and add a new host. Enter the SSH command in the format: `ssh pi@<tailscale_ip>`.
-    * **Terminal**: Use the command `ssh pi@<tailscale_ip>`.
+    * **VS Code**: In VS Code using the Remote-SSH Plugin, open the Remote Explorer, select "SSH Targets," and add a new host. Enter the SSH command in the format: `ssh swh@<tailscale_ip>`.
+    * **Terminal**: Use the command `ssh swh@<tailscale_ip>`.
 
 After connecting, you can navigate to the project directory and run the main application. Note that some hardware components like the LEDs require root privileges, so you must run the main script with `sudo`: `sudo python3 main.py`.
 
